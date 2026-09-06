@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" class="h-full scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap.xml"><script>
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const dark = saved ? saved === 'dark' : true;
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script><script async src="https://www.googletagmanager.com/gtag/js?id=G-0M3EMVVS2J"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-0M3EMVVS2J');
+    </script><title>پروژه‌های عملیاتی | SRE Engineering</title><meta name="description" content="پروژه‌های SRE و DevOps درباره Kubernetes reliability، Observability، GitLab CI/CD، Helm، Argo CD و عملیات incident-ready."><link rel="canonical" href="https://devdocs.ir/projects/"><link rel="alternate" hreflang="fa" href="https://devdocs.ir/projects/"><link rel="alternate" hreflang="x-default" href="https://devdocs.ir/projects/"><meta property="og:type" content="website"><meta property="og:title" content="پروژه‌های عملیاتی | SRE Engineering"><meta property="og:description" content="پروژه‌های SRE و DevOps درباره Kubernetes reliability، Observability، GitLab CI/CD، Helm، Argo CD و عملیات incident-ready."><meta property="og:url" content="https://devdocs.ir/projects/"><meta property="og:image" content="https://devdocs.ir/og-default.svg"><meta property="og:site_name" content="Pedram Sarani | SRE / DevOps Engineer"><meta property="og:locale" content="fa_IR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="پروژه‌های عملیاتی | SRE Engineering"><meta name="twitter:description" content="پروژه‌های SRE و DevOps درباره Kubernetes reliability، Observability، GitLab CI/CD، Helm، Argo CD و عملیات incident-ready."><meta name="twitter:image" content="https://devdocs.ir/og-default.svg"><meta name="robots" content="index,follow"><link rel="stylesheet" href="/_astro/about.CfKbJgE5.css">
+<link rel="stylesheet" href="/_astro/about.DIohnR2r.css"></head> <body class="h-full"> <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-slate-900 focus:px-3 focus:py-2 focus:text-sm focus:text-white"> رفتن به محتوای اصلی </a> <div class="pointer-events-none fixed inset-0 -z-10 hidden bg-grid-light bg-[size:32px_32px] opacity-[0.27] dark:block dark:bg-grid-dark dark:opacity-[0.22]"></div> <header class="sticky top-0 z-50 border-b border-slate-200/65 bg-white/80 backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-950/90"> <div class="site-frame site-frame--wide flex items-center justify-between py-3"> <a href="/" class="group"> <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-slate-900 transition group-hover:text-accent-600 dark:text-slate-50 dark:group-hover:text-sky-300">
+Pedram Sarani
+</p> <p class="mt-1 text-[11px] font-medium uppercase tracking-[0.11em] text-slate-500 dark:text-slate-300">یادداشت‌های SRE و DevOps</p> </a> <nav aria-label="ناوبری اصلی" class="hidden items-center gap-2 lg:flex"> <a href="/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> خانه </a><a href="/articles/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> مقالات </a><a href="/quick-notes/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> نکته‌های سریع </a><a href="/learning-paths/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> مسیرهای یادگیری </a><a href="/resume/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> رزومه </a><a href="/about/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> درباره </a><a href="/contact/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> تماس </a> <a href="/search/" class="rounded-lg border px-3 py-2 text-sm font-medium transition ltr:ml-2 rtl:mr-2 border-slate-300 bg-white/80 text-slate-700 hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> جست‌وجو </a>  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button> <script type="module">const o=document.documentElement,a=Array.from(document.querySelectorAll("[data-theme-toggle]")),c=()=>{const t=localStorage.getItem("theme");return t==="light"||t==="dark"?t:"dark"},s=t=>{const e=t==="dark";o.classList.toggle("dark",e),o.dataset.theme=t;for(const r of a){const n=r.querySelector(".theme-icon");n&&(n.textContent=e?"Light":"Dark"),r.setAttribute("aria-pressed",String(e))}};s(c());for(const t of a)t.addEventListener("click",()=>{const e=o.classList.contains("dark")?"light":"dark";localStorage.setItem("theme",e),s(e)});</script> </nav> <div class="flex items-center gap-2 lg:hidden">  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button>  <button id="mobile-nav-toggle" type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/85 px-3 text-xs font-semibold uppercase tracking-wider text-slate-700 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50" aria-controls="mobile-nav" aria-expanded="false" data-menu-label="منو" data-close-label="بستن"> منو </button> </div> </div> <div id="mobile-nav-backdrop" class="fixed inset-0 z-40 hidden bg-slate-950/55 lg:hidden" aria-hidden="true"></div> <nav id="mobile-nav" aria-label="ناوبری موبایل" class="fixed right-3 top-[68px] z-50 hidden w-[min(90vw,360px)] rounded-2xl border border-slate-200 bg-white p-3 shadow-panel dark:border-slate-700 dark:bg-slate-950 lg:hidden"> <ul class="space-y-1.5"> <li> <a href="/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> خانه </a> </li><li> <a href="/articles/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> مقالات </a> </li><li> <a href="/quick-notes/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> نکته‌های سریع </a> </li><li> <a href="/learning-paths/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> مسیرهای یادگیری </a> </li><li> <a href="/resume/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> رزومه </a> </li><li> <a href="/about/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> درباره </a> </li><li> <a href="/contact/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> تماس </a> </li><li> <a href="/search/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> جست‌وجو </a> </li> </ul> </nav> </header> <script type="module">const t=document.querySelector("#mobile-nav-toggle"),a=document.querySelector("#mobile-nav"),d=document.querySelector("#mobile-nav-backdrop"),n=e=>{!t||!a||!d||(a.classList.toggle("hidden",!e),d.classList.toggle("hidden",!e),t.setAttribute("aria-expanded",String(e)),t.textContent=e?t.dataset.closeLabel??"Close":t.dataset.menuLabel??"Menu",document.body.classList.toggle("overflow-hidden",e))};t?.addEventListener("click",()=>{const e=t.getAttribute("aria-expanded")==="true";n(!e)});d?.addEventListener("click",()=>n(!1));a?.querySelectorAll("a").forEach(e=>{e.addEventListener("click",()=>n(!1))});window.addEventListener("keydown",e=>{e.key==="Escape"&&n(!1)});</script> <main id="main-content" data-content-width="wide" class="site-frame min-h-[76vh] py-10 md:py-14 site-frame--wide">  <section class="mb-10 panel p-7 md:p-9"> <p class="kicker">Platform engineering عملی</p> <h1 class="mt-4 section-title">پروژه‌های عملیاتی</h1> <p class="mt-4 max-w-3xl text-base leading-8 muted">
+این پروژه‌ها مثل آماده‌سازی برای production نوشته شده‌اند: قبل از اعتماد به یک الگو، failure behavior، deployment workflow، runner capacity، backup assumptions، observability coverage و operator runbooks بررسی می‌شوند.
+</p> <div class="mt-6 flex flex-wrap gap-2"> <span class="chip !cursor-default">3 پروژه</span> <span class="chip !cursor-default">2 فعال</span> <a href="/resume/" class="chip">زمینه رزومه</a> </div> </section> <section class="mb-10 grid gap-4 lg:grid-cols-[0.9fr_1.1fr]"> <div class="panel p-5"> <h2 class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400"> حوزه‌های پروژه‌ها </h2> <div class="flex flex-wrap gap-2"> <a href="/projects/?area=%D8%A7%DB%8C%D9%85%D9%86%DB%8C%20rollout" class="chip" data-filter-archive-link="projects" data-filter-key="area" data-filter-value="ایمنی rollout"> ایمنی rollout </a><a href="/projects/?area=%D9%BE%D8%A7%DB%8C%D8%AF%D8%A7%D8%B1%DB%8C%20Kubernetes" class="chip" data-filter-archive-link="projects" data-filter-key="area" data-filter-value="پایداری Kubernetes"> پایداری Kubernetes </a><a href="/projects/?area=%D9%BE%D8%A7%DB%8C%D8%AF%D8%A7%D8%B1%DB%8C%20runner" class="chip" data-filter-archive-link="projects" data-filter-key="area" data-filter-value="پایداری runner"> پایداری runner </a><a href="/projects/?area=%D8%AA%D8%AD%D9%88%DB%8C%D9%84%20GitOps" class="chip" data-filter-archive-link="projects" data-filter-key="area" data-filter-value="تحویل GitOps"> تحویل GitOps </a><a href="/projects/?area=%D8%B2%DB%8C%D8%B1%D8%B3%D8%A7%D8%AE%D8%AA%20CI%2FCD" class="chip" data-filter-archive-link="projects" data-filter-key="area" data-filter-value="زیرساخت CI/CD"> زیرساخت CI/CD </a><a href="/projects/?area=%D9%85%D8%B4%D8%A7%D9%87%D8%AF%D9%87%E2%80%8C%D9%BE%D8%B0%DB%8C%D8%B1%DB%8C" class="chip" data-filter-archive-link="projects" data-filter-key="area" data-filter-value="مشاهده‌پذیری"> مشاهده‌پذیری </a> </div> </div><div class="panel p-5"> <h2 class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400"> ابزارها و مهارت‌ها </h2> <div class="flex flex-wrap gap-2"> <a href="/projects/?tool=ansible" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="ansible"> ansible </a><a href="/projects/?tool=argo-rollouts" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="argo-rollouts"> argo-rollouts </a><a href="/projects/?tool=argocd" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="argocd"> argocd </a><a href="/projects/?tool=docker" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="docker"> docker </a><a href="/projects/?tool=gitlab" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="gitlab"> gitlab </a><a href="/projects/?tool=grafana" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="grafana"> grafana </a><a href="/projects/?tool=jaeger" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="jaeger"> jaeger </a><a href="/projects/?tool=k3s" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="k3s"> k3s </a><a href="/projects/?tool=kubernetes" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="kubernetes"> kubernetes </a><a href="/projects/?tool=logging" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="logging"> logging </a><a href="/projects/?tool=prometheus" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="prometheus"> prometheus </a><a href="/projects/?tool=terraform" class="chip font-mono" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="terraform"> terraform </a> </div> </div> </section> <div data-filter-status="projects" hidden class="mb-6 flex flex-wrap items-center gap-2 text-sm"> <span class="chip !cursor-default"> فیلتر فعال: <span data-filter-value></span> </span> <a href="/projects/" class="chip">حذف فیلتر</a> </div> <p data-filter-empty="projects" hidden class="mb-6 rounded-xl border border-slate-200 bg-white/70 p-4 text-sm font-semibold text-slate-700 dark:border-slate-800 dark:bg-slate-900/65 dark:text-slate-300"> موردی پیدا نشد </p> <script>(function(){const archiveId = "projects";
+const filters = ["tool","area"];
+
+  (() => {
+    const applyArchiveFilter = () => {
+      const params = new URLSearchParams(window.location.search);
+      const activeKey = filters.find((key) => {
+        const value = params.get(key);
+        return value !== null && value.trim().length > 0;
+      });
+
+      if (!activeKey) return;
+
+      const activeValue = params.get(activeKey)?.trim() || '';
+      const cards = Array.from(document.querySelectorAll(`[data-filter-archive="${archiveId}"] [data-filter-card]`));
+
+      const getFilterValues = (card) => {
+        const raw = card.getAttribute(`data-filter-${activeKey}`);
+        if (!raw) return [];
+
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed.map(String) : [String(parsed)];
+        } catch {
+          return [raw];
+        }
+      };
+
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const isVisible = getFilterValues(card).includes(activeValue);
+        card.toggleAttribute('hidden', !isVisible);
+        if (isVisible) visibleCount += 1;
+      });
+
+      const filterLinks = Array.from(document.querySelectorAll(`[data-filter-archive-link="${archiveId}"]`));
+      const activeLinks = filterLinks.filter(
+        (link) =>
+          link.getAttribute('data-filter-key') === activeKey && link.getAttribute('data-filter-value') === activeValue
+      );
+      const readableValue = activeLinks[0]?.textContent?.trim() || activeValue;
+
+      activeLinks.forEach((link) => {
+        link.setAttribute('aria-current', 'true');
+      });
+
+      const status = document.querySelector(`[data-filter-status="${archiveId}"]`);
+      const statusValue = status?.querySelector('[data-filter-value]');
+      if (status && statusValue) {
+        statusValue.textContent = readableValue;
+        status.removeAttribute('hidden');
+      }
+
+      const emptyState = document.querySelector(`[data-filter-empty="${archiveId}"]`);
+      if (emptyState) {
+        emptyState.toggleAttribute('hidden', visibleCount !== 0);
+      }
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyArchiveFilter, { once: true });
+    } else {
+      applyArchiveFilter();
+    }
+  })();
+})();</script> <section class="mb-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4"> <div class="rounded-xl border border-slate-200 bg-white/70 p-4 text-sm leading-7 text-slate-700 dark:border-slate-800 dark:bg-slate-900/65 dark:text-slate-300"> اولین نقطه شکست چیست: resource pressure، rollout state، runner saturation، storage یا signal quality. </div><div class="rounded-xl border border-slate-200 bg-white/70 p-4 text-sm leading-7 text-slate-700 dark:border-slate-800 dark:bg-slate-900/65 dark:text-slate-300"> operator چطور آن را می‌بیند: metrics، logs، traces، events، dashboards و alert behavior. </div><div class="rounded-xl border border-slate-200 bg-white/70 p-4 text-sm leading-7 text-slate-700 dark:border-slate-800 dark:bg-slate-900/65 dark:text-slate-300"> تغییر چطور کنترل می‌شود: Helm values، GitOps sync، pipeline gates و rollback criteria. </div><div class="rounded-xl border border-slate-200 bg-white/70 p-4 text-sm leading-7 text-slate-700 dark:border-slate-800 dark:bg-slate-900/65 dark:text-slate-300"> چه چیزی مستند می‌ماند: runbooks، incident notes، recovery assumptions و follow-up work. </div> </section> <section data-filter-archive="projects" class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"> <article data-filter-card data-filter-tool="[&#34;k3s&#34;,&#34;prometheus&#34;,&#34;grafana&#34;,&#34;jaeger&#34;,&#34;logging&#34;,&#34;terraform&#34;]" data-filter-area="[&#34;پایداری Kubernetes&#34;,&#34;مشاهده‌پذیری&#34;]" class="group panel relative overflow-hidden p-6 transition duration-300 hover:-translate-y-1 hover:border-accent-500/60 hover:shadow-soft"> <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-accent-500 to-transparent opacity-70"></div> <div class="mb-4 flex items-start justify-between gap-3"> <h2 class="font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"> پروژه Observability برای Kubernetes </h2> <span class="rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.11em] border-emerald-300 bg-emerald-100/80 text-emerald-800 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"> فعال </span> </div> <p class="mb-5 text-sm leading-7 text-slate-600 dark:text-slate-300">پروژه Observability برای Kubernetes که بررسی می‌کند Prometheus metrics، Grafana dashboards، Jaeger traces، logs و alert rules چقدر به جدا کردن failure mode واقعی کمک می‌کنند.</p> <div class="mb-5 flex flex-wrap gap-2"> <a href="/projects/?tool=k3s" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="k3s"> k3s </a><a href="/projects/?tool=prometheus" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="prometheus"> prometheus </a><a href="/projects/?tool=grafana" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="grafana"> grafana </a><a href="/projects/?tool=jaeger" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="jaeger"> jaeger </a><a href="/projects/?tool=logging" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="logging"> logging </a><a href="/projects/?tool=terraform" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="terraform"> terraform </a> </div>  </article><article data-filter-card data-filter-tool="[&#34;gitlab&#34;,&#34;docker&#34;,&#34;terraform&#34;,&#34;ansible&#34;]" data-filter-area="[&#34;زیرساخت CI/CD&#34;,&#34;پایداری runner&#34;]" class="group panel relative overflow-hidden p-6 transition duration-300 hover:-translate-y-1 hover:border-accent-500/60 hover:shadow-soft"> <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-accent-500 to-transparent opacity-70"></div> <div class="mb-4 flex items-start justify-between gap-3"> <h2 class="font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"> پروژه پایداری GitLab Runner </h2> <span class="rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.11em] border-emerald-300 bg-emerald-100/80 text-emerald-800 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"> فعال </span> </div> <p class="mb-5 text-sm leading-7 text-slate-600 dark:text-slate-300">پروژه GitLab CI/CD runner برای جدا کردن مشکل طراحی pipeline از runner saturation، با تمرکز روی queue behavior، cache correctness، executor isolation و retry discipline.</p> <div class="mb-5 flex flex-wrap gap-2"> <a href="/projects/?tool=gitlab" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="gitlab"> gitlab </a><a href="/projects/?tool=docker" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="docker"> docker </a><a href="/projects/?tool=terraform" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="terraform"> terraform </a><a href="/projects/?tool=ansible" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="ansible"> ansible </a> </div>  </article><article data-filter-card data-filter-tool="[&#34;argocd&#34;,&#34;argo-rollouts&#34;,&#34;prometheus&#34;,&#34;kubernetes&#34;]" data-filter-area="[&#34;تحویل GitOps&#34;,&#34;ایمنی rollout&#34;]" class="group panel relative overflow-hidden p-6 transition duration-300 hover:-translate-y-1 hover:border-accent-500/60 hover:shadow-soft"> <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-accent-500 to-transparent opacity-70"></div> <div class="mb-4 flex items-start justify-between gap-3"> <h2 class="font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"> Guardrailهای rollout با Argo CD </h2> <span class="rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.11em] border-sky-300 bg-sky-100/80 text-sky-800 dark:border-sky-700 dark:bg-sky-900/30 dark:text-sky-300"> برنامه‌ریزی‌شده </span> </div> <p class="mb-5 text-sm leading-7 text-slate-600 dark:text-slate-300">پروژه GitOps delivery برای آزمون Helm values contracts، رفتار sync در Argo CD، rollout health checks، promotion gates و rollback runbooks قبل از استانداردسازی release pattern.</p> <div class="mb-5 flex flex-wrap gap-2"> <a href="/projects/?tool=argocd" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="argocd"> argocd </a><a href="/projects/?tool=argo-rollouts" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="argo-rollouts"> argo-rollouts </a><a href="/projects/?tool=prometheus" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="prometheus"> prometheus </a><a href="/projects/?tool=kubernetes" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" data-filter-archive-link="projects" data-filter-key="tool" data-filter-value="kubernetes"> kubernetes </a> </div>  </article> </section>  </main> <footer class="mt-0 border-t border-slate-200/70 bg-white/75 dark:border-slate-800/75 dark:bg-slate-950/70"> <div class="site-frame site-frame--wide flex flex-col gap-5 py-7 md:flex-row md:items-center md:justify-between"> <div class="max-w-2xl"> <p class="font-display text-lg font-semibold text-slate-900 dark:text-slate-100">Pedram Sarani</p> <p class="mt-2 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300"> یادداشت‌های SRE و DevOps درباره Kubernetes reliability، Linux internals، CI/CD، GitOps، Observability و پایداری در production. </p> <p class="mt-3 text-xs uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">(c) 2026 همه حقوق محفوظ است.</p> </div> <div class="flex flex-wrap gap-2 text-sm md:flex-nowrap"> <a href="https://github.com/saranipedram" target="_blank" rel="noreferrer" class="chip"> GitHub </a><a href="https://devdocs.ir" target="_blank" rel="noreferrer" class="chip"> وبلاگ / نمونه‌کار </a><a href="https://www.linkedin.com/in/pedram-sarani/" target="_blank" rel="noreferrer" class="chip"> LinkedIn </a><a href="/rss.xml" class="chip"> RSS </a> </div> </div> </footer> <script>
+  (() => {
+    const onReady = (callback) => {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback, { once: true });
+      } else {
+        callback();
+      }
+    };
+
+    const readCode = (pre) => {
+      const code = pre.querySelector('code') ?? pre;
+      const lines = code.querySelectorAll('.line');
+
+      if (lines.length > 0) {
+        return Array.from(lines)
+          .map((line) => line.textContent ?? '')
+          .join('\n')
+          .replace(/\n+$/u, '');
+      }
+
+      return (code.textContent ?? '').replace(/\n+$/u, '');
+    };
+
+    const copyText = async (text) => {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return;
+        } catch {
+          // Fall through to the selection-based copy path for stricter browser contexts.
+        }
+      }
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.inset = '0 auto auto 0';
+      textarea.style.opacity = '0';
+      textarea.style.pointerEvents = 'none';
+
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+
+      const copied = document.execCommand('copy');
+      textarea.remove();
+
+      if (!copied) {
+        throw new Error('Copy failed');
+      }
+    };
+
+    const applyButtonStyles = (button) => {
+      button.style.position = 'static';
+      button.style.inset = 'auto';
+      button.style.zIndex = 'auto';
+      button.style.border = '1px solid rgba(148, 163, 184, 0.55)';
+      button.style.borderRadius = '9999px';
+      button.style.background = 'rgba(255, 255, 255, 0.9)';
+      button.style.color = '#334155';
+      button.style.cursor = 'pointer';
+      button.style.direction = 'ltr';
+      button.style.fontFamily = "'IBM Plex Sans', 'Vazirmatn', sans-serif";
+      button.style.fontSize = '0.72rem';
+      button.style.fontWeight = '700';
+      button.style.lineHeight = '1';
+      button.style.padding = '0.46rem 0.72rem';
+      button.style.textAlign = 'center';
+      button.style.userSelect = 'none';
+    };
+
+    onReady(() => {
+      const isFa = document.documentElement.lang === 'fa';
+      const idleText = isFa ? 'کپی' : 'Copy';
+      const doneText = isFa ? 'کپی شد' : 'Copied';
+      const failedText = isFa ? 'خطا' : 'Error';
+      const label = isFa ? 'کپی کردن کد' : 'Copy code';
+
+      document.querySelectorAll('.article-prose pre').forEach((pre) => {
+        if (pre.dataset.copyReady === 'true' || pre.closest('.code-block-wrapper')) {
+          return;
+        }
+
+        pre.dataset.copyReady = 'true';
+        pre.style.marginTop = '0';
+        pre.style.paddingTop = '1rem';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        wrapper.style.direction = 'ltr';
+        wrapper.style.margin = '1.75rem 0';
+        wrapper.style.maxWidth = 'none';
+        wrapper.style.width = '100%';
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'code-block-toolbar';
+        toolbar.style.display = 'flex';
+        toolbar.style.justifyContent = 'flex-end';
+        toolbar.style.marginBottom = '0.5rem';
+        toolbar.style.width = '100%';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy-button';
+        button.setAttribute('aria-label', label);
+        button.textContent = idleText;
+        applyButtonStyles(button);
+
+        button.addEventListener('click', async () => {
+          try {
+            await copyText(readCode(pre));
+            button.textContent = doneText;
+            button.dataset.state = 'copied';
+            button.style.borderColor = 'rgba(34, 197, 94, 0.55)';
+            button.style.color = '#15803d';
+          } catch {
+            button.textContent = failedText;
+            button.dataset.state = 'error';
+            button.style.borderColor = 'rgba(239, 68, 68, 0.6)';
+            button.style.color = '#b91c1c';
+          }
+
+          window.setTimeout(() => {
+            button.textContent = idleText;
+            delete button.dataset.state;
+            applyButtonStyles(button);
+          }, 1600);
+        });
+
+        pre.parentNode?.insertBefore(wrapper, pre);
+        toolbar.appendChild(button);
+        wrapper.appendChild(toolbar);
+        wrapper.appendChild(pre);
+      });
+    });
+  })();
+</script> </body></html>

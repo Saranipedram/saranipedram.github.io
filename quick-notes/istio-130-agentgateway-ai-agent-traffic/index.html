@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" class="h-full scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap.xml"><script>
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const dark = saved ? saved === 'dark' : true;
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script><script async src="https://www.googletagmanager.com/gtag/js?id=G-0M3EMVVS2J"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-0M3EMVVS2J');
+    </script><title>Istio 1.30 و agentgateway؛ Gateway برای ترافیک AI Agent | نکته‌های سریع</title><meta name="description" content="در Istio 1.30 قابلیت آزمایشی agentgateway اضافه شده است؛ یک data plane جدید برای Gateway API که مسیر ترافیک AI Agent، ارتباط با LLM، اتصال به MCP و ارتباط Agent-to-Agent را کنترل می‌کند."><link rel="canonical" href="https://devdocs.ir/quick-notes/istio-130-agentgateway-ai-agent-traffic/"><meta property="og:type" content="article"><meta property="og:title" content="Istio 1.30 و agentgateway؛ Gateway برای ترافیک AI Agent | نکته‌های سریع"><meta property="og:description" content="در Istio 1.30 قابلیت آزمایشی agentgateway اضافه شده است؛ یک data plane جدید برای Gateway API که مسیر ترافیک AI Agent، ارتباط با LLM، اتصال به MCP و ارتباط Agent-to-Agent را کنترل می‌کند."><meta property="og:url" content="https://devdocs.ir/quick-notes/istio-130-agentgateway-ai-agent-traffic/"><meta property="og:image" content="https://devdocs.ir/images/og/quick-notes/istio-130-agentgateway-ai-agent-traffic/ogImage.png"><meta property="og:site_name" content="Pedram Sarani | SRE / DevOps Engineer"><meta property="og:locale" content="fa_IR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Istio 1.30 و agentgateway؛ Gateway برای ترافیک AI Agent | نکته‌های سریع"><meta name="twitter:description" content="در Istio 1.30 قابلیت آزمایشی agentgateway اضافه شده است؛ یک data plane جدید برای Gateway API که مسیر ترافیک AI Agent، ارتباط با LLM، اتصال به MCP و ارتباط Agent-to-Agent را کنترل می‌کند."><meta name="twitter:image" content="https://devdocs.ir/images/og/quick-notes/istio-130-agentgateway-ai-agent-traffic/ogImage.png"><meta name="robots" content="index,follow"><meta property="article:published_time" content="2026-06-25T00:00:00.000Z"><meta property="article:modified_time" content="2026-06-25T00:00:00.000Z"><link rel="stylesheet" href="/_astro/about.CfKbJgE5.css">
+<link rel="stylesheet" href="/_astro/_slug_.C5RoJ5N6.css">
+<style>.references-block[data-astro-cid-sekel5fk]{margin-block-start:3rem;max-width:100%;border-block-start:1px solid color-mix(in srgb,#cbd5e1 72%,transparent);padding-block-start:1.75rem}.dark .references-block[data-astro-cid-sekel5fk]{border-block-start-color:color-mix(in srgb,#334155 78%,transparent)}.references-block__title[data-astro-cid-sekel5fk]{margin:0;color:#0f172a;font-size:1.35rem;font-weight:650;line-height:1.35}.dark .references-block__title[data-astro-cid-sekel5fk]{color:#f8fafc}.references-block__list[data-astro-cid-sekel5fk]{display:grid;gap:.8rem;margin:1rem 0 0;padding:0;list-style:none}.references-block__item[data-astro-cid-sekel5fk]{border:1px solid color-mix(in srgb,#cbd5e1 70%,transparent);border-radius:.5rem;background:color-mix(in srgb,#f8fafc 76%,transparent);padding:.95rem 1rem}.dark .references-block__item[data-astro-cid-sekel5fk]{border-color:color-mix(in srgb,#334155 82%,transparent);background:color-mix(in srgb,#0f172a 70%,transparent)}.references-block__item-header[data-astro-cid-sekel5fk]{display:flex;flex-wrap:wrap;align-items:baseline;gap:.45rem .65rem}.references-block__link[data-astro-cid-sekel5fk]{color:#0369a1;font-weight:700;overflow-wrap:anywhere;text-decoration-color:color-mix(in srgb,#0ea5e9 58%,transparent);text-decoration-thickness:.12em;text-underline-offset:.2em;unicode-bidi:isolate}.references-block__link[data-astro-cid-sekel5fk]:hover{color:#0284c7}.dark .references-block__link[data-astro-cid-sekel5fk]{color:#7dd3fc;text-decoration-color:color-mix(in srgb,#38bdf8 60%,transparent)}.dark .references-block__link[data-astro-cid-sekel5fk]:hover{color:#bae6fd}.references-block__badge[data-astro-cid-sekel5fk]{border:1px solid color-mix(in srgb,#0ea5e9 26%,transparent);border-radius:9999px;background:color-mix(in srgb,#e0f2fe 74%,transparent);color:#0369a1;font-size:.72rem;font-weight:700;line-height:1.4;padding:.12rem .5rem;white-space:nowrap}.dark .references-block__badge[data-astro-cid-sekel5fk]{border-color:color-mix(in srgb,#38bdf8 30%,transparent);background:color-mix(in srgb,#082f49 64%,transparent);color:#bae6fd}.references-block__meta[data-astro-cid-sekel5fk],.references-block__note[data-astro-cid-sekel5fk]{margin:.45rem 0 0;color:#475569;font-size:.92rem;line-height:1.75}.dark .references-block__meta[data-astro-cid-sekel5fk],.dark .references-block__note[data-astro-cid-sekel5fk]{color:#cbd5e1}.references-block__meta[data-astro-cid-sekel5fk]{display:flex;flex-wrap:wrap;gap:.25rem .75rem}.references-block__meta[data-astro-cid-sekel5fk] span[data-astro-cid-sekel5fk]{overflow-wrap:anywhere;unicode-bidi:isolate}.references-block__meta[data-astro-cid-sekel5fk] span[data-astro-cid-sekel5fk]+span[data-astro-cid-sekel5fk]:before{color:color-mix(in srgb,currentColor 42%,transparent);content:"|";margin-inline-end:.75rem}.references-block__note[data-astro-cid-sekel5fk]{max-width:100%}[data-astro-cid-sekel5fk][dir=rtl] .references-block__note[data-astro-cid-sekel5fk]{text-align:justify;-moz-text-align-last:auto;text-align-last:auto;text-justify:inter-word}@media(max-width:640px){.references-block[data-astro-cid-sekel5fk]{margin-block-start:2.5rem;padding-block-start:1.4rem}.references-block__item[data-astro-cid-sekel5fk]{padding:.85rem}}
+</style>
+<link rel="stylesheet" href="/_astro/about.DIohnR2r.css"></head> <body class="h-full"> <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-slate-900 focus:px-3 focus:py-2 focus:text-sm focus:text-white"> رفتن به محتوای اصلی </a> <div class="pointer-events-none fixed inset-0 -z-10 hidden bg-grid-light bg-[size:32px_32px] opacity-[0.27] dark:block dark:bg-grid-dark dark:opacity-[0.22]"></div> <header class="sticky top-0 z-50 border-b border-slate-200/65 bg-white/80 backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-950/90"> <div class="site-frame site-frame--wide flex items-center justify-between py-3"> <a href="/" class="group"> <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-slate-900 transition group-hover:text-accent-600 dark:text-slate-50 dark:group-hover:text-sky-300">
+Pedram Sarani
+</p> <p class="mt-1 text-[11px] font-medium uppercase tracking-[0.11em] text-slate-500 dark:text-slate-300">یادداشت‌های SRE و DevOps</p> </a> <nav aria-label="ناوبری اصلی" class="hidden items-center gap-2 lg:flex"> <a href="/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> خانه </a><a href="/articles/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> مقالات </a><a href="/quick-notes/" aria-current="page" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none bg-sky-100 text-slate-900 dark:bg-sky-900/55 dark:text-sky-100"> نکته‌های سریع </a><a href="/learning-paths/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> مسیرهای یادگیری </a><a href="/resume/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> رزومه </a><a href="/about/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> درباره </a><a href="/contact/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> تماس </a> <a href="/search/" class="rounded-lg border px-3 py-2 text-sm font-medium transition ltr:ml-2 rtl:mr-2 border-slate-300 bg-white/80 text-slate-700 hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> جست‌وجو </a>  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button> <script type="module">const o=document.documentElement,a=Array.from(document.querySelectorAll("[data-theme-toggle]")),c=()=>{const t=localStorage.getItem("theme");return t==="light"||t==="dark"?t:"dark"},s=t=>{const e=t==="dark";o.classList.toggle("dark",e),o.dataset.theme=t;for(const r of a){const n=r.querySelector(".theme-icon");n&&(n.textContent=e?"Light":"Dark"),r.setAttribute("aria-pressed",String(e))}};s(c());for(const t of a)t.addEventListener("click",()=>{const e=o.classList.contains("dark")?"light":"dark";localStorage.setItem("theme",e),s(e)});</script> </nav> <div class="flex items-center gap-2 lg:hidden">  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button>  <button id="mobile-nav-toggle" type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/85 px-3 text-xs font-semibold uppercase tracking-wider text-slate-700 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50" aria-controls="mobile-nav" aria-expanded="false" data-menu-label="منو" data-close-label="بستن"> منو </button> </div> </div> <div id="mobile-nav-backdrop" class="fixed inset-0 z-40 hidden bg-slate-950/55 lg:hidden" aria-hidden="true"></div> <nav id="mobile-nav" aria-label="ناوبری موبایل" class="fixed right-3 top-[68px] z-50 hidden w-[min(90vw,360px)] rounded-2xl border border-slate-200 bg-white p-3 shadow-panel dark:border-slate-700 dark:bg-slate-950 lg:hidden"> <ul class="space-y-1.5"> <li> <a href="/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> خانه </a> </li><li> <a href="/articles/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> مقالات </a> </li><li> <a href="/quick-notes/" aria-current="page" class="block rounded-lg px-3 py-2 text-sm font-medium transition bg-sky-100 text-slate-900 dark:bg-sky-900/55 dark:text-sky-100"> نکته‌های سریع </a> </li><li> <a href="/learning-paths/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> مسیرهای یادگیری </a> </li><li> <a href="/resume/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> رزومه </a> </li><li> <a href="/about/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> درباره </a> </li><li> <a href="/contact/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> تماس </a> </li><li> <a href="/search/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> جست‌وجو </a> </li> </ul> </nav> </header> <script type="module">const t=document.querySelector("#mobile-nav-toggle"),a=document.querySelector("#mobile-nav"),d=document.querySelector("#mobile-nav-backdrop"),n=e=>{!t||!a||!d||(a.classList.toggle("hidden",!e),d.classList.toggle("hidden",!e),t.setAttribute("aria-expanded",String(e)),t.textContent=e?t.dataset.closeLabel??"Close":t.dataset.menuLabel??"Menu",document.body.classList.toggle("overflow-hidden",e))};t?.addEventListener("click",()=>{const e=t.getAttribute("aria-expanded")==="true";n(!e)});d?.addEventListener("click",()=>n(!1));a?.querySelectorAll("a").forEach(e=>{e.addEventListener("click",()=>n(!1))});window.addEventListener("keydown",e=>{e.key==="Escape"&&n(!1)});</script> <main id="main-content" data-content-width="article" class="site-frame min-h-[76vh] py-10 md:py-14 site-frame--article">  <div class="mb-8 flex flex-wrap gap-3"> <a href="/quick-notes/" class="chip">بازگشت به نکته‌های سریع</a>  </div> <article class="panel p-6 md:p-8 xl:p-10"> <header class="mb-10 border-b border-slate-200/80 pb-8 text-center dark:border-slate-800"> <p class="kicker">نکته‌های سریع</p> <h1 class="mx-auto mt-4 max-w-4xl text-center font-display text-4xl font-semibold leading-tight tracking-tight text-slate-900 dark:text-slate-100 md:text-5xl"> Istio 1.30 و agentgateway؛ Gateway برای ترافیک AI Agent </h1> <p class="article-hero-description--fa mx-auto mt-4 max-w-3xl text-center text-lg leading-8 muted">در Istio 1.30 قابلیت آزمایشی agentgateway اضافه شده است؛ یک data plane جدید برای Gateway API که مسیر ترافیک AI Agent، ارتباط با LLM، اتصال به MCP و ارتباط Agent-to-Agent را کنترل می‌کند.</p> <div class="article-meta mt-6 justify-center text-center text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400"> <span dir="ltr">Istio</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="ltr">1</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span>istio</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="rtl">۴ تیر ۱۴۰۵</span> </div> <div class="mt-5 flex flex-wrap justify-center gap-2"> <span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#istio </span><span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#gateway-api </span><span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#agentgateway </span><span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#ai-agent </span><span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#service-mesh </span> </div> </header> <div class="article-prose article-prose--fa-article"> <p>در Istio 1.30 یک قابلیت مهم و البته جالب آزمایشی اضافه شده است: پشتیبانی از agentgateway به عنوان یک پیاده‌سازی جدید برای Gateway API.</p>
+<p>ایده اصلی ساده است. تا امروز در Istio معمولاً Gateway را با Envoy می‌شناختیم؛ اما agentgateway قرار است یک data plane جدید برای نوع تازه‌ای از ترافیک باشد: ترافیک AI Agent، ارتباط با LLM، اتصال به MCP و حتی ارتباط Agent-to-Agent.</p>
+<p>البته باید بین خود agentgateway و اتصال اولیه آن به Istio فرق گذاشت. خود agentgateway برای ترافیک LLM، ارتباط MCP و سناریوهای A2A طراحی شده، اما استفاده از آن داخل Istio 1.30 هنوز experimental است و طبیعی است که کامل و نهایی حساب نشود.</p>
+<p>دلیل این دیتاپلین تازه فقط طولانی‌تر بودن بعضی ارتباط‌ها نیست؛ خود جنس ترافیک هم عوض شده است. در APIهای رایج، معمولاً یک درخواست می‌آید و یک پاسخ برمی‌گردد. اما در ارتباط‌هایی مثل MCP و A2A ماجرا می‌تواند فرق کند: session طولانی‌تر داریم، پیام‌ها می‌توانند بر پایه JSON-RPC باشند، و حتی خود server ممکن است پیام جدیدی را شروع کند؛ برای نمونه از مسیر SSE. از طرف دیگر، Envoy با چیزهایی مثل streaming غریبه نیست، اما برای فهم مستقیم مفاهیمی مثل درخواست اجرای tool، پیام‌های agent و مسیر‌دهی مخصوص مدل‌های LLM ساخته نشده است. اینجاست که agentgateway می‌خواهد نقش یک دیتاپلین آگاه‌تر به ترافیک هوش مصنوعی را بازی کند.</p>
+<p>نکته مهم دیگه این است که agentgateway فعلاً جایگزین Envoy در کل mesh نیست. در Istio 1.30 این قابلیت فقط برای گیت‌وی ساخته‌شده با Gateway API پشتیبانی می‌شود، نه برای sidecar و نه برای waypoint. یعنی وقتی فعال شود، روی همان پاد Gateway جای Envoy را می‌گیرد؛ پاد گیت وی به‌جای Envoy حالا agentgateway را به عنوان data plane اجرا می‌کند و از یک GatewayClass جداگانه به نام istio-agentgateway استفاده می‌کند. این جایگزینی فقط روی پاد Gateway رخ می‌دهد، نه در کل mesh.</p>
+<p>برای فعال‌کردن این قابلیت، باید PILOT_ENABLE_AGENTGATEWAY=true را در تنظیمات istiod فعال کنیم. یعنی باید هنگام نصب یا به‌روزرسانی Istio، از مسیر Helm یا istioctl روی تنظیمات خود Istio اعمال شود.(بسته به مدل نصب)</p>
+<p>نمونه manifest در بخش «مثال» انتهای صفحه آمده است. در آن manifest، ترافیک مسیر /agents از یک Gateway عبور می‌کند؛ همان گیت‌وی با مقدار gatewayClassName: istio-agentgateway به agentgateway وصل شده است. بعد از آن، ترافیک به سرویس داخلی agent-api می‌رسد. خود manifest قرار نیست کل agentgateway را نصب کند؛ فقط نشان می‌دهد مسیر ترافیک از مسیر استاندارد Gateway API کنترل می‌شود.</p>
+<figure class="figure-block" data-align="center" data-size="normal" data-astro-cid-yht7xm4l> <img src="/images/quick-notes/istio-130-agentgateway-ai-agent-traffic/istio-agentgateway-clean-diagram-v2.png" alt="Istio 1.30 agentgateway" loading="lazy" decoding="async" class="figure-block__image" data-astro-cid-yht7xm4l>  </figure> 
+<p>خلاصه این تغییر: Istio گیت وی را فقط به عنوان ورودی سرویس‌های کلاسیک نمی‌بیند؛ بلکه آن را به نقطه کنترل ترافیک AI-native هم نزدیک می‌کند. البته چون این قابلیت در Istio 1.30 هنوز experimental است، بهتر است فعلاً آن را برای بررسی، تست و آماده‌سازی ذهنی ببینیم، نه برای تصمیم فوری در production.</p> </div> <section class="mt-10 border-t border-slate-200/80 pt-8 dark:border-slate-800"> <h2 class="font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">مثال</h2> <pre class="mt-4 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 p-4 text-left text-sm leading-6 text-slate-100" dir="ltr"><code class="font-mono">apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: ai-agent-gateway
+  namespace: ai
+spec:
+  gatewayClassName: istio-agentgateway
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ai-agent-route
+  namespace: ai
+spec:
+  parentRefs:
+    - name: ai-agent-gateway
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /agents
+      backendRefs:
+        - name: agent-api
+          port: 8080
+</code></pre> </section> <section class="mt-10 border-t border-slate-200/80 pt-8 dark:border-slate-800"> <h2 class="font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">محدودیت‌ها</h2> <ul class="mt-4 list-disc space-y-2 pr-5 text-sm leading-8 muted marker:text-accent-500"> <li>این قابلیت در Istio 1.30 هنوز experimental است.</li><li>فعلاً جایگزین Envoy در کل mesh نیست.</li><li>فقط برای گیت‌وی ساخته‌شده با Gateway API مطرح است، نه sidecar و نه waypoint.</li><li>قبل از استفاده باید feature flag مربوط به agentgateway روی istiod فعال شود.</li> </ul> </section> <section class="references-block" aria-labelledby="references-heading" dir="rtl" data-astro-cid-sekel5fk><h2 id="references-heading" class="references-block__title font-display" data-astro-cid-sekel5fk>منابع و مطالعهٔ بیشتر</h2><ol class="references-block__list" data-astro-cid-sekel5fk><li class="references-block__item" data-astro-cid-sekel5fk><div class="references-block__item-header" data-astro-cid-sekel5fk><a href="https://istio.io/latest/news/releases/1.30.x/announcing-1.30/" target="_blank" rel="noopener noreferrer" class="references-block__link" data-astro-cid-sekel5fk><bdi dir="auto" data-astro-cid-sekel5fk>Announcing Istio 1.30.0</bdi></a><span class="references-block__badge" data-astro-cid-sekel5fk>مستندات رسمی</span></div><p class="references-block__meta" data-astro-cid-sekel5fk><span data-astro-cid-sekel5fk><bdi dir="auto" data-astro-cid-sekel5fk>Istio</bdi></span><span data-astro-cid-sekel5fk><bdi dir="ltr" data-astro-cid-sekel5fk>istio.io</bdi></span><span data-astro-cid-sekel5fk>بازبینی: <bdi dir="rtl" data-astro-cid-sekel5fk>۴ تیر ۱۴۰۵</bdi></span></p><p class="references-block__note" dir="rtl" data-astro-cid-sekel5fk>اعلام رسمی پشتیبانی experimental از agentgateway در Istio 1.30، فعال‌سازی با PILOT_ENABLE_AGENTGATEWAY، جایگزینی Envoy روی Gateway Pod، استفاده از GatewayClass با نام istio-agentgateway و محدود بودن آن به گیت‌وی ساخته‌شده با Gateway API.</p></li><li class="references-block__item" data-astro-cid-sekel5fk><div class="references-block__item-header" data-astro-cid-sekel5fk><a href="https://agentgateway.dev/docs/" target="_blank" rel="noopener noreferrer" class="references-block__link" data-astro-cid-sekel5fk><bdi dir="auto" data-astro-cid-sekel5fk>agentgateway Documentation</bdi></a><span class="references-block__badge" data-astro-cid-sekel5fk>مستندات رسمی</span></div><p class="references-block__meta" data-astro-cid-sekel5fk><span data-astro-cid-sekel5fk><bdi dir="auto" data-astro-cid-sekel5fk>agentgateway</bdi></span><span data-astro-cid-sekel5fk><bdi dir="ltr" data-astro-cid-sekel5fk>agentgateway.dev</bdi></span><span data-astro-cid-sekel5fk>بازبینی: <bdi dir="rtl" data-astro-cid-sekel5fk>۴ تیر ۱۴۰۵</bdi></span></p><p class="references-block__note" dir="rtl" data-astro-cid-sekel5fk>مستندات رسمی agentgateway برای gateway ترافیک service، LLM و MCP.</p></li></ol></section> </article>  </main> <footer class="mt-0 border-t border-slate-200/70 bg-white/75 dark:border-slate-800/75 dark:bg-slate-950/70"> <div class="site-frame site-frame--wide flex flex-col gap-5 py-7 md:flex-row md:items-center md:justify-between"> <div class="max-w-2xl"> <p class="font-display text-lg font-semibold text-slate-900 dark:text-slate-100">Pedram Sarani</p> <p class="mt-2 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300"> یادداشت‌های SRE و DevOps درباره Kubernetes reliability، Linux internals، CI/CD، GitOps، Observability و پایداری در production. </p> <p class="mt-3 text-xs uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">(c) 2026 همه حقوق محفوظ است.</p> </div> <div class="flex flex-wrap gap-2 text-sm md:flex-nowrap"> <a href="https://github.com/saranipedram" target="_blank" rel="noreferrer" class="chip"> GitHub </a><a href="https://devdocs.ir" target="_blank" rel="noreferrer" class="chip"> وبلاگ / نمونه‌کار </a><a href="https://www.linkedin.com/in/pedram-sarani/" target="_blank" rel="noreferrer" class="chip"> LinkedIn </a><a href="/rss.xml" class="chip"> RSS </a> </div> </div> </footer> <script>
+  (() => {
+    const onReady = (callback) => {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback, { once: true });
+      } else {
+        callback();
+      }
+    };
+
+    const readCode = (pre) => {
+      const code = pre.querySelector('code') ?? pre;
+      const lines = code.querySelectorAll('.line');
+
+      if (lines.length > 0) {
+        return Array.from(lines)
+          .map((line) => line.textContent ?? '')
+          .join('\n')
+          .replace(/\n+$/u, '');
+      }
+
+      return (code.textContent ?? '').replace(/\n+$/u, '');
+    };
+
+    const copyText = async (text) => {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return;
+        } catch {
+          // Fall through to the selection-based copy path for stricter browser contexts.
+        }
+      }
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.inset = '0 auto auto 0';
+      textarea.style.opacity = '0';
+      textarea.style.pointerEvents = 'none';
+
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+
+      const copied = document.execCommand('copy');
+      textarea.remove();
+
+      if (!copied) {
+        throw new Error('Copy failed');
+      }
+    };
+
+    const applyButtonStyles = (button) => {
+      button.style.position = 'static';
+      button.style.inset = 'auto';
+      button.style.zIndex = 'auto';
+      button.style.border = '1px solid rgba(148, 163, 184, 0.55)';
+      button.style.borderRadius = '9999px';
+      button.style.background = 'rgba(255, 255, 255, 0.9)';
+      button.style.color = '#334155';
+      button.style.cursor = 'pointer';
+      button.style.direction = 'ltr';
+      button.style.fontFamily = "'IBM Plex Sans', 'Vazirmatn', sans-serif";
+      button.style.fontSize = '0.72rem';
+      button.style.fontWeight = '700';
+      button.style.lineHeight = '1';
+      button.style.padding = '0.46rem 0.72rem';
+      button.style.textAlign = 'center';
+      button.style.userSelect = 'none';
+    };
+
+    onReady(() => {
+      const isFa = document.documentElement.lang === 'fa';
+      const idleText = isFa ? 'کپی' : 'Copy';
+      const doneText = isFa ? 'کپی شد' : 'Copied';
+      const failedText = isFa ? 'خطا' : 'Error';
+      const label = isFa ? 'کپی کردن کد' : 'Copy code';
+
+      document.querySelectorAll('.article-prose pre').forEach((pre) => {
+        if (pre.dataset.copyReady === 'true' || pre.closest('.code-block-wrapper')) {
+          return;
+        }
+
+        pre.dataset.copyReady = 'true';
+        pre.style.marginTop = '0';
+        pre.style.paddingTop = '1rem';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        wrapper.style.direction = 'ltr';
+        wrapper.style.margin = '1.75rem 0';
+        wrapper.style.maxWidth = 'none';
+        wrapper.style.width = '100%';
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'code-block-toolbar';
+        toolbar.style.display = 'flex';
+        toolbar.style.justifyContent = 'flex-end';
+        toolbar.style.marginBottom = '0.5rem';
+        toolbar.style.width = '100%';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy-button';
+        button.setAttribute('aria-label', label);
+        button.textContent = idleText;
+        applyButtonStyles(button);
+
+        button.addEventListener('click', async () => {
+          try {
+            await copyText(readCode(pre));
+            button.textContent = doneText;
+            button.dataset.state = 'copied';
+            button.style.borderColor = 'rgba(34, 197, 94, 0.55)';
+            button.style.color = '#15803d';
+          } catch {
+            button.textContent = failedText;
+            button.dataset.state = 'error';
+            button.style.borderColor = 'rgba(239, 68, 68, 0.6)';
+            button.style.color = '#b91c1c';
+          }
+
+          window.setTimeout(() => {
+            button.textContent = idleText;
+            delete button.dataset.state;
+            applyButtonStyles(button);
+          }, 1600);
+        });
+
+        pre.parentNode?.insertBefore(wrapper, pre);
+        toolbar.appendChild(button);
+        wrapper.appendChild(toolbar);
+        wrapper.appendChild(pre);
+      });
+    });
+  })();
+</script> </body></html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" class="h-full scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap.xml"><script>
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const dark = saved ? saved === 'dark' : true;
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script><script async src="https://www.googletagmanager.com/gtag/js?id=G-0M3EMVVS2J"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-0M3EMVVS2J');
+    </script><title>Pedram Sarani | فارسی</title><meta name="description" content="تجربه‌ها و یادداشت‌های عملی دربارهٔ Linux، Kubernetes، GitOps و reliability"><link rel="canonical" href="https://devdocs.ir/"><link rel="alternate" hreflang="fa" href="https://devdocs.ir/"><link rel="alternate" hreflang="x-default" href="https://devdocs.ir/"><meta property="og:type" content="website"><meta property="og:title" content="Pedram Sarani | فارسی"><meta property="og:description" content="تجربه‌ها و یادداشت‌های عملی دربارهٔ Linux، Kubernetes، GitOps و reliability"><meta property="og:url" content="https://devdocs.ir/"><meta property="og:image" content="https://devdocs.ir/og-default.svg"><meta property="og:site_name" content="Pedram Sarani | SRE / DevOps Engineer"><meta property="og:locale" content="fa_IR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Pedram Sarani | فارسی"><meta name="twitter:description" content="تجربه‌ها و یادداشت‌های عملی دربارهٔ Linux، Kubernetes، GitOps و reliability"><meta name="twitter:image" content="https://devdocs.ir/og-default.svg"><meta name="robots" content="index,follow"><link rel="stylesheet" href="/_astro/about.CfKbJgE5.css">
+<link rel="stylesheet" href="/_astro/about.DIohnR2r.css"></head> <body class="h-full"> <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-slate-900 focus:px-3 focus:py-2 focus:text-sm focus:text-white"> رفتن به محتوای اصلی </a> <div class="pointer-events-none fixed inset-0 -z-10 hidden bg-grid-light bg-[size:32px_32px] opacity-[0.27] dark:block dark:bg-grid-dark dark:opacity-[0.22]"></div> <header class="sticky top-0 z-50 border-b border-slate-200/65 bg-white/80 backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-950/90"> <div class="site-frame site-frame--wide flex items-center justify-between py-3"> <a href="/" class="group"> <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-slate-900 transition group-hover:text-accent-600 dark:text-slate-50 dark:group-hover:text-sky-300">
+Pedram Sarani
+</p> <p class="mt-1 text-[11px] font-medium uppercase tracking-[0.11em] text-slate-500 dark:text-slate-300">یادداشت‌های SRE و DevOps</p> </a> <nav aria-label="ناوبری اصلی" class="hidden items-center gap-2 lg:flex"> <a href="/" aria-current="page" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none bg-sky-100 text-slate-900 dark:bg-sky-900/55 dark:text-sky-100"> خانه </a><a href="/articles/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> مقالات </a><a href="/quick-notes/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> نکته‌های سریع </a><a href="/learning-paths/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> مسیرهای یادگیری </a><a href="/resume/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> رزومه </a><a href="/about/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> درباره </a><a href="/contact/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> تماس </a> <a href="/search/" class="rounded-lg border px-3 py-2 text-sm font-medium transition ltr:ml-2 rtl:mr-2 border-slate-300 bg-white/80 text-slate-700 hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> جست‌وجو </a>  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button> <script type="module">const o=document.documentElement,a=Array.from(document.querySelectorAll("[data-theme-toggle]")),c=()=>{const t=localStorage.getItem("theme");return t==="light"||t==="dark"?t:"dark"},s=t=>{const e=t==="dark";o.classList.toggle("dark",e),o.dataset.theme=t;for(const r of a){const n=r.querySelector(".theme-icon");n&&(n.textContent=e?"Light":"Dark"),r.setAttribute("aria-pressed",String(e))}};s(c());for(const t of a)t.addEventListener("click",()=>{const e=o.classList.contains("dark")?"light":"dark";localStorage.setItem("theme",e),s(e)});</script> </nav> <div class="flex items-center gap-2 lg:hidden">  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button>  <button id="mobile-nav-toggle" type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/85 px-3 text-xs font-semibold uppercase tracking-wider text-slate-700 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50" aria-controls="mobile-nav" aria-expanded="false" data-menu-label="منو" data-close-label="بستن"> منو </button> </div> </div> <div id="mobile-nav-backdrop" class="fixed inset-0 z-40 hidden bg-slate-950/55 lg:hidden" aria-hidden="true"></div> <nav id="mobile-nav" aria-label="ناوبری موبایل" class="fixed right-3 top-[68px] z-50 hidden w-[min(90vw,360px)] rounded-2xl border border-slate-200 bg-white p-3 shadow-panel dark:border-slate-700 dark:bg-slate-950 lg:hidden"> <ul class="space-y-1.5"> <li> <a href="/" aria-current="page" class="block rounded-lg px-3 py-2 text-sm font-medium transition bg-sky-100 text-slate-900 dark:bg-sky-900/55 dark:text-sky-100"> خانه </a> </li><li> <a href="/articles/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> مقالات </a> </li><li> <a href="/quick-notes/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> نکته‌های سریع </a> </li><li> <a href="/learning-paths/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> مسیرهای یادگیری </a> </li><li> <a href="/resume/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> رزومه </a> </li><li> <a href="/about/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> درباره </a> </li><li> <a href="/contact/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> تماس </a> </li><li> <a href="/search/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> جست‌وجو </a> </li> </ul> </nav> </header> <script type="module">const t=document.querySelector("#mobile-nav-toggle"),a=document.querySelector("#mobile-nav"),d=document.querySelector("#mobile-nav-backdrop"),n=e=>{!t||!a||!d||(a.classList.toggle("hidden",!e),d.classList.toggle("hidden",!e),t.setAttribute("aria-expanded",String(e)),t.textContent=e?t.dataset.closeLabel??"Close":t.dataset.menuLabel??"Menu",document.body.classList.toggle("overflow-hidden",e))};t?.addEventListener("click",()=>{const e=t.getAttribute("aria-expanded")==="true";n(!e)});d?.addEventListener("click",()=>n(!1));a?.querySelectorAll("a").forEach(e=>{e.addEventListener("click",()=>n(!1))});window.addEventListener("keydown",e=>{e.key==="Escape"&&n(!1)});</script> <main id="main-content" data-content-width="wide" class="site-frame min-h-[76vh] py-10 md:py-14 site-frame--wide">  <section class="mb-10 pt-3 md:mb-12 md:pt-8"> <div class="mx-auto w-full max-w-none rounded-2xl border border-slate-200/80 bg-white/60 px-5 py-7 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/45 md:px-8 md:py-8 lg:px-10"> <div class="grid gap-6 lg:grid-cols-[18rem_minmax(0,1fr)_18rem] lg:items-end lg:gap-10"> <div class="order-2 lg:order-1"> <div class="flex flex-wrap gap-3 lg:flex-col"> <a href="/articles/" class="rounded-lg bg-accent-600 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-accent-500">
+مقالات
+</a> <a href="/quick-notes/" class="rounded-lg border border-accent-200 bg-accent-50/70 px-5 py-3 text-center text-sm font-semibold text-accent-700 transition hover:border-accent-500 hover:text-accent-600 dark:border-sky-900/70 dark:bg-sky-950/30 dark:text-sky-200 dark:hover:border-sky-500 dark:hover:text-sky-300">
+نکته‌های سریع
+</a> <a href="/learning-paths/" class="rounded-lg border border-accent-200 bg-accent-50/70 px-5 py-3 text-center text-sm font-semibold text-accent-700 transition hover:border-accent-500 hover:text-accent-600 dark:border-sky-900/70 dark:bg-sky-950/30 dark:text-sky-200 dark:hover:border-sky-500 dark:hover:text-sky-300">
+مسیرهای یادگیری
+</a> <a href="/resume/" class="rounded-lg border border-slate-300 bg-white/65 px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-700 dark:bg-slate-950/25 dark:text-slate-200 dark:hover:border-sky-500 dark:hover:text-sky-300">
+مشاهده رزومه
+</a> </div> <dl class="mt-4 grid w-full grid-cols-2 gap-2 lg:grid-cols-1"> <div class="rounded-lg border border-slate-200 bg-white/70 px-4 py-2.5 dark:border-slate-800 dark:bg-slate-950/25"> <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">مقاله‌ها</dt> <dd class="mt-1 font-display text-xl font-semibold text-slate-900 dark:text-slate-100">2</dd> </div> <div class="rounded-lg border border-slate-200 bg-white/70 px-4 py-2.5 dark:border-slate-800 dark:bg-slate-950/25"> <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">نکته‌های سریع</dt> <dd class="mt-1 font-display text-xl font-semibold text-slate-900 dark:text-slate-100">2</dd> </div> <div class="rounded-lg border border-slate-200 bg-white/70 px-4 py-2.5 dark:border-slate-800 dark:bg-slate-950/25"> <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">مسیرهای یادگیری</dt> <dd class="mt-1 font-display text-xl font-semibold text-slate-900 dark:text-slate-100">1</dd> </div> </dl> </div> <div class="order-1 text-center lg:order-2"> <p class="kicker">یادداشت‌های عملیاتی SRE و DevOps</p> <h1 class="mx-auto mt-3 max-w-4xl font-display text-3xl font-semibold !leading-tight tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl md:text-5xl lg:text-[3rem]">
+دفترچه‌ای عملیاتی برای پایداری سرویس‌ها، <span class="tech-term">GitOps</span> و زیرساخت <span class="tech-term">Kubernetes</span>.
+</h1> <p class="mx-auto mt-3 max-w-3xl text-justify text-base !leading-7 muted [text-align-last:center] md:text-lg md:!leading-8">
+اینجا درباره اداره سیستم‌های <span class="tech-term">production</span> می‌نویسم: رفتار <span class="tech-term">Kubernetes</span>، طراحی <span class="tech-term">Helm</span> و <span class="tech-term">Argo CD</span>، ساختار <span class="tech-term">GitLab CI/CD</span>، <span class="tech-term">Linux internals</span>، <span class="tech-term">Observability</span>، backup و <span class="tech-term">Incident Management</span>.
+</p> </div> <div class="hidden lg:order-3 lg:block" aria-hidden="true"></div> </div> </div> </section> <section class="mb-14"> <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"> <div> <h2 class="section-title">نکته‌های سریع</h2> <p class="mt-2 max-w-3xl text-sm leading-7 muted">
+یادداشت‌های کوتاه برای نکته‌هایی که سریع به کار می‌آیند؛ از دستورهای عیب‌یابی تا جزئیات کوچک Kubernetes و Linux.
+</p> </div> <a href="/quick-notes/" class="text-sm font-semibold text-accent-600 hover:text-accent-500 dark:text-sky-300 dark:hover:text-sky-200">همه نکته‌ها</a> </div> <div class="grid gap-4 md:grid-cols-3"> <a href="/quick-notes/http-query-method-rfc-10008/" class="group flex h-full flex-col rounded-lg border border-slate-200 bg-white/70 p-5 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-accent-500/70 hover:shadow-soft dark:border-slate-800 dark:bg-slate-900/55 dark:hover:border-sky-500"> <p class="article-meta text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"> <span dir="ltr">HTTP</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="rtl">۱۶ تیر ۱۴۰۵</span> </p> <h3 class="mt-2 font-display text-xl font-semibold tracking-tight text-slate-900 group-hover:text-accent-600 dark:text-slate-100 dark:group-hover:text-sky-300">HTTP بالاخره برای queryهای بزرگ یک جواب تمیز دارد: QUERY</h3> <p class="mt-3 text-sm leading-7 muted">بعد از سال‌ها بحث در IETF، متد QUERY در قالب RFC 10008 استاندارد شد؛ راهی برای اینکه queryهای بزرگ را مثل POST داخل body بفرستیم، اما همچنان به HTTP بگوییم این درخواست read-only است و تکرار شدنش خطرناک نیست.</p> </a><a href="/quick-notes/istio-130-agentgateway-ai-agent-traffic/" class="group flex h-full flex-col rounded-lg border border-slate-200 bg-white/70 p-5 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-accent-500/70 hover:shadow-soft dark:border-slate-800 dark:bg-slate-900/55 dark:hover:border-sky-500"> <p class="article-meta text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"> <span dir="ltr">Istio</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="rtl">۴ تیر ۱۴۰۵</span> </p> <h3 class="mt-2 font-display text-xl font-semibold tracking-tight text-slate-900 group-hover:text-accent-600 dark:text-slate-100 dark:group-hover:text-sky-300">Istio 1.30 و agentgateway؛ Gateway برای ترافیک AI Agent</h3> <p class="mt-3 text-sm leading-7 muted">در Istio 1.30 قابلیت آزمایشی agentgateway اضافه شده است؛ یک data plane جدید برای Gateway API که مسیر ترافیک AI Agent، ارتباط با LLM، اتصال به MCP و ارتباط Agent-to-Agent را کنترل می‌کند.</p> </a> </div> </section> <section class="mb-14"> <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"> <h2 class="section-title">تازه‌ترین مقاله‌ها</h2> <a href="/articles/" class="text-sm font-semibold text-accent-600 hover:text-accent-500 dark:text-sky-300 dark:hover:text-sky-200">همه مقاله‌ها</a> </div> <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"> <article class="panel p-6 transition duration-300 hover:-translate-y-1 hover:border-accent-500/60 hover:shadow-soft"> <p class="article-meta text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400"> <a href="/categories/linux/" class="hover:text-accent-600 dark:hover:text-sky-300" dir="ltr"> linux </a> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="rtl">۲۸ تیر ۱۴۰۵</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="rtl">27 دقیقه</span> </p> <h3 class="mt-3 font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"> <a href="/articles/cpu-scheduling-cfs-eevdf-kubernetes/" class="hover:text-accent-600 dark:hover:text-sky-300">هسته CPU را سریع‌تر نمی‌کند؛ فقط زمان را سهمیه‌بندی می‌کند</a> </h3> <p class="mt-3 text-sm leading-7 muted">از CFS و EEVDF تا cpu.weight، cpu.max، throttling و PSI؛ این مقاله توضیح می‌دهد چرا در کوبرنتیز، CPU بیشتر همیشه برنامه را سریع‌تر نمی‌کند، limit چطور به سهمیه زمانی تبدیل می‌شود و چرا یک پاد با میانگین مصرف پایین هم ممکن است throttle شود.</p> <div class="mt-5 flex flex-wrap gap-2"> <a href="/tags/kubernetes/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#kubernetes </a><a href="/tags/linux/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#linux </a><a href="/tags/cpu/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#cpu </a><a href="/tags/throttling/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#throttling </a><a href="/tags/cfs/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#cfs </a><a href="/tags/eevdf/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#eevdf </a><a href="/tags/sre/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#sre </a><a href="/tags/troubleshooting/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#troubleshooting </a> </div> <a href="/articles/cpu-scheduling-cfs-eevdf-kubernetes/" class="mt-6 inline-flex text-sm font-semibold text-accent-600 hover:text-accent-500 dark:text-sky-300 dark:hover:text-sky-200">مشاهده مقاله</a> </article><article class="panel p-6 transition duration-300 hover:-translate-y-1 hover:border-accent-500/60 hover:shadow-soft"> <p class="article-meta text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400"> <a href="/categories/kubernetes/" class="hover:text-accent-600 dark:hover:text-sky-300" dir="ltr"> kubernetes </a> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="rtl">۲۵ خرداد ۱۴۰۵</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="rtl">34 دقیقه</span> </p> <h3 class="mt-3 font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"> <a href="/articles/kubernetes-oomkilled-vs-evicted-production/" class="hover:text-accent-600 dark:hover:text-sky-300">تفاوت OOMKilled و Evicted در Kubernetes؛ از cgroup تا kubelet</a> </h3> <p class="mt-3 text-sm leading-7 muted">تفاوت OOMKilled و Evicted در Kubernetes؛ اینکه چه زمانی مشکل از عبور container از memory limit است و چه زمانی kubelet به‌خاطر فشار روی node یک Pod را حذف می‌کند.</p> <div class="mt-5 flex flex-wrap gap-2"> <a href="/tags/kubernetes/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#kubernetes </a><a href="/tags/sre/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#sre </a><a href="/tags/kubelet/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#kubelet </a><a href="/tags/oomkilled/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#oomkilled </a><a href="/tags/eviction/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#eviction </a><a href="/tags/troubleshooting/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#troubleshooting </a><a href="/tags/memory/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#memory </a><a href="/tags/cgroup/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#cgroup </a><a href="/tags/psi/" class="chip bg-slate-100/90 !px-2.5 !py-1 font-mono text-[11px] dark:bg-slate-900/90" dir="ltr">
+#psi </a> </div> <a href="/articles/kubernetes-oomkilled-vs-evicted-production/" class="mt-6 inline-flex text-sm font-semibold text-accent-600 hover:text-accent-500 dark:text-sky-300 dark:hover:text-sky-200">مشاهده مقاله</a> </article> </div> </section> <section class="mb-14"> <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"> <div> <h2 class="section-title">مسیرهای یادگیری</h2> <p class="mt-2 max-w-3xl text-sm leading-7 muted">
+مسیرهایی عملی برای دنبال کردن یک مسئله از مدل ذهنی تا تصمیم‌های <span class="tech-term">production</span>؛ از capacity planning و ایمنی release تا troubleshooting و <span class="tech-term">Observability</span>.
+</p> </div> <a href="/learning-paths/" class="text-sm font-semibold text-accent-600 hover:text-accent-500 dark:text-sky-300 dark:hover:text-sky-200">همه مسیرها</a> </div> <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"> <a href="/learning-paths/kubernetes-traffic-flow/" class="group flex h-full flex-col rounded-lg border border-slate-200 bg-white/70 p-5 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-accent-500/70 hover:shadow-soft dark:border-slate-800 dark:bg-slate-900/55 dark:hover:border-sky-500"> <p class="article-meta text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"> <span dir="rtl">متوسط</span>   <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="rtl">۴ درس</span> </p> <h3 class="mt-2 font-display text-xl font-semibold tracking-tight text-slate-900 group-hover:text-accent-600 dark:text-slate-100 dark:group-hover:text-sky-300">مسیر ترافیک در Kubernetes؛ از Pod تا Service و Gateway</h3> <p class="mt-3 text-sm leading-7 muted">در این مسیر یاد می‌گیریم ترافیک در کوبرنتیز واقعاً از کجا عبور می‌کند؛ از ارتباط Pod و Service تا Gateway API، و لایه‌هایی مثل DNS، EndpointSlice، kube-proxy، NAT، conntrack و NetworkPolicy.</p> </a> </div> </section> <section class="mx-auto -mb-6 max-w-5xl rounded-2xl border border-slate-200/80 bg-white/55 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/40 md:-mb-12 md:p-6"> <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(17rem,0.75fr)] lg:items-start"> <div class="max-w-3xl"> <h2 class="font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">محورهای محتوایی سایت</h2> <p class="mt-2 text-sm leading-6 muted"> محتوای این سایت درباره چیزهایی است که در کار واقعی SRE و DevOps به هم وصل می‌شوند: Linux، Kubernetes، CI/CD، GitOps و Observability. هر مطلب سعی می‌کند یک مشکل <span class="tech-term">production</span> را ساده کند؛ از اینکه سیستم چرا این‌طور رفتار می‌کند تا اینکه چطور باید آن را دید، تغییر داد و عیب‌یابی کرد. </p> </div> <div class="flex flex-wrap gap-2 lg:justify-end"> <a href="/tags/kubernetes/" class="chip font-mono" dir="ltr">
+#Kubernetes </a><span class="chip !cursor-default font-mono" dir="ltr">
+#GitOps </span><span class="chip !cursor-default font-mono" dir="ltr">
+#Observability </span><a href="/tags/linux/" class="chip font-mono" dir="ltr">
+#Linux </a><span class="chip !cursor-default font-mono" dir="ltr">
+#CI/CD </span><span class="chip !cursor-default font-mono" dir="ltr">
+#Helm </span><span class="chip !cursor-default font-mono" dir="ltr">
+#Argo CD </span> </div> </div> <div class="mt-4 grid gap-2.5 md:grid-cols-3"> <article class="rounded-lg border border-slate-200/80 bg-white/60 p-3.5 dark:border-slate-800 dark:bg-slate-950/25"> <h3 class="font-display text-base font-semibold text-slate-900 dark:text-slate-100">زیر پوست Linux</h3> <p class="mt-1.5 text-sm leading-6 muted">از process و memory تا cgroup، scheduler و network؛ پایه‌هایی که وقتی سرویس یا کلاستر عجیب رفتار می‌کند، جواب خیلی وقت‌ها همان‌جاست.</p> </article><article class="rounded-lg border border-slate-200/80 bg-white/60 p-3.5 dark:border-slate-800 dark:bg-slate-950/25"> <h3 class="font-display text-base font-semibold text-slate-900 dark:text-slate-100">Kubernetes در production</h3> <p class="mt-1.5 text-sm leading-6 muted">درباره workloadها، kubelet، resource pressure، eviction، scheduling و backup؛ چیزهایی که پایداری کلاستر را در عمل می‌سازند یا خراب می‌کنند.</p> </article><article class="rounded-lg border border-slate-200/80 bg-white/60 p-3.5 dark:border-slate-800 dark:bg-slate-950/25"> <h3 class="font-display text-base font-semibold text-slate-900 dark:text-slate-100">از release تا عیب‌یابی</h3> <p class="mt-1.5 text-sm leading-6 muted">درباره CI/CD، Helm، Argo CD، rollout، rollback، log، metric و trace؛ یعنی چطور تغییر را امن جلو ببریم و وقتی مشکل پیش آمد، علت را پیدا کنیم.</p> </article> </div> </section>  </main> <footer class="mt-0 border-t border-slate-200/70 bg-white/75 dark:border-slate-800/75 dark:bg-slate-950/70"> <div class="site-frame site-frame--wide flex flex-col gap-5 py-7 md:flex-row md:items-center md:justify-between"> <div class="max-w-2xl"> <p class="font-display text-lg font-semibold text-slate-900 dark:text-slate-100">Pedram Sarani</p> <p class="mt-2 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300"> یادداشت‌های SRE و DevOps درباره Kubernetes reliability، Linux internals، CI/CD، GitOps، Observability و پایداری در production. </p> <p class="mt-3 text-xs uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">(c) 2026 همه حقوق محفوظ است.</p> </div> <div class="flex flex-wrap gap-2 text-sm md:flex-nowrap"> <a href="https://github.com/saranipedram" target="_blank" rel="noreferrer" class="chip"> GitHub </a><a href="https://devdocs.ir" target="_blank" rel="noreferrer" class="chip"> وبلاگ / نمونه‌کار </a><a href="https://www.linkedin.com/in/pedram-sarani/" target="_blank" rel="noreferrer" class="chip"> LinkedIn </a><a href="/rss.xml" class="chip"> RSS </a> </div> </div> </footer> <script>
+  (() => {
+    const onReady = (callback) => {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback, { once: true });
+      } else {
+        callback();
+      }
+    };
+
+    const readCode = (pre) => {
+      const code = pre.querySelector('code') ?? pre;
+      const lines = code.querySelectorAll('.line');
+
+      if (lines.length > 0) {
+        return Array.from(lines)
+          .map((line) => line.textContent ?? '')
+          .join('\n')
+          .replace(/\n+$/u, '');
+      }
+
+      return (code.textContent ?? '').replace(/\n+$/u, '');
+    };
+
+    const copyText = async (text) => {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return;
+        } catch {
+          // Fall through to the selection-based copy path for stricter browser contexts.
+        }
+      }
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.inset = '0 auto auto 0';
+      textarea.style.opacity = '0';
+      textarea.style.pointerEvents = 'none';
+
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+
+      const copied = document.execCommand('copy');
+      textarea.remove();
+
+      if (!copied) {
+        throw new Error('Copy failed');
+      }
+    };
+
+    const applyButtonStyles = (button) => {
+      button.style.position = 'static';
+      button.style.inset = 'auto';
+      button.style.zIndex = 'auto';
+      button.style.border = '1px solid rgba(148, 163, 184, 0.55)';
+      button.style.borderRadius = '9999px';
+      button.style.background = 'rgba(255, 255, 255, 0.9)';
+      button.style.color = '#334155';
+      button.style.cursor = 'pointer';
+      button.style.direction = 'ltr';
+      button.style.fontFamily = "'IBM Plex Sans', 'Vazirmatn', sans-serif";
+      button.style.fontSize = '0.72rem';
+      button.style.fontWeight = '700';
+      button.style.lineHeight = '1';
+      button.style.padding = '0.46rem 0.72rem';
+      button.style.textAlign = 'center';
+      button.style.userSelect = 'none';
+    };
+
+    onReady(() => {
+      const isFa = document.documentElement.lang === 'fa';
+      const idleText = isFa ? 'کپی' : 'Copy';
+      const doneText = isFa ? 'کپی شد' : 'Copied';
+      const failedText = isFa ? 'خطا' : 'Error';
+      const label = isFa ? 'کپی کردن کد' : 'Copy code';
+
+      document.querySelectorAll('.article-prose pre').forEach((pre) => {
+        if (pre.dataset.copyReady === 'true' || pre.closest('.code-block-wrapper')) {
+          return;
+        }
+
+        pre.dataset.copyReady = 'true';
+        pre.style.marginTop = '0';
+        pre.style.paddingTop = '1rem';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        wrapper.style.direction = 'ltr';
+        wrapper.style.margin = '1.75rem 0';
+        wrapper.style.maxWidth = 'none';
+        wrapper.style.width = '100%';
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'code-block-toolbar';
+        toolbar.style.display = 'flex';
+        toolbar.style.justifyContent = 'flex-end';
+        toolbar.style.marginBottom = '0.5rem';
+        toolbar.style.width = '100%';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy-button';
+        button.setAttribute('aria-label', label);
+        button.textContent = idleText;
+        applyButtonStyles(button);
+
+        button.addEventListener('click', async () => {
+          try {
+            await copyText(readCode(pre));
+            button.textContent = doneText;
+            button.dataset.state = 'copied';
+            button.style.borderColor = 'rgba(34, 197, 94, 0.55)';
+            button.style.color = '#15803d';
+          } catch {
+            button.textContent = failedText;
+            button.dataset.state = 'error';
+            button.style.borderColor = 'rgba(239, 68, 68, 0.6)';
+            button.style.color = '#b91c1c';
+          }
+
+          window.setTimeout(() => {
+            button.textContent = idleText;
+            delete button.dataset.state;
+            applyButtonStyles(button);
+          }, 1600);
+        });
+
+        pre.parentNode?.insertBefore(wrapper, pre);
+        toolbar.appendChild(button);
+        wrapper.appendChild(toolbar);
+        wrapper.appendChild(pre);
+      });
+    });
+  })();
+</script> </body></html>

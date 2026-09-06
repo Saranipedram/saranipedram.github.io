@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" class="h-full scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap.xml"><script>
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const dark = saved ? saved === 'dark' : true;
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script><script async src="https://www.googletagmanager.com/gtag/js?id=G-0M3EMVVS2J"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-0M3EMVVS2J');
+    </script><title>مسیر ترافیک در Kubernetes؛ از Pod تا Service و Gateway | مسیر یادگیری</title><meta name="description" content="در این مسیر یاد می‌گیریم ترافیک در کوبرنتیز واقعاً از کجا عبور می‌کند؛ از ارتباط Pod و Service تا Gateway API، و لایه‌هایی مثل DNS، EndpointSlice، kube-proxy، NAT، conntrack و NetworkPolicy."><link rel="canonical" href="https://devdocs.ir/learning-paths/kubernetes-traffic-flow/"><link rel="alternate" hreflang="fa" href="https://devdocs.ir/learning-paths/kubernetes-traffic-flow/"><link rel="alternate" hreflang="x-default" href="https://devdocs.ir/learning-paths/kubernetes-traffic-flow/"><meta property="og:type" content="website"><meta property="og:title" content="مسیر ترافیک در Kubernetes؛ از Pod تا Service و Gateway | مسیر یادگیری"><meta property="og:description" content="در این مسیر یاد می‌گیریم ترافیک در کوبرنتیز واقعاً از کجا عبور می‌کند؛ از ارتباط Pod و Service تا Gateway API، و لایه‌هایی مثل DNS، EndpointSlice، kube-proxy، NAT، conntrack و NetworkPolicy."><meta property="og:url" content="https://devdocs.ir/learning-paths/kubernetes-traffic-flow/"><meta property="og:image" content="https://devdocs.ir/images/og/learning-paths/kubernetes-traffic-flow/ogImage.png"><meta property="og:site_name" content="Pedram Sarani | SRE / DevOps Engineer"><meta property="og:locale" content="fa_IR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="مسیر ترافیک در Kubernetes؛ از Pod تا Service و Gateway | مسیر یادگیری"><meta name="twitter:description" content="در این مسیر یاد می‌گیریم ترافیک در کوبرنتیز واقعاً از کجا عبور می‌کند؛ از ارتباط Pod و Service تا Gateway API، و لایه‌هایی مثل DNS، EndpointSlice، kube-proxy، NAT، conntrack و NetworkPolicy."><meta name="twitter:image" content="https://devdocs.ir/images/og/learning-paths/kubernetes-traffic-flow/ogImage.png"><meta name="robots" content="index,follow"><link rel="stylesheet" href="/_astro/about.CfKbJgE5.css">
+<link rel="stylesheet" href="/_astro/_slug_.C5RoJ5N6.css">
+<link rel="stylesheet" href="/_astro/about.DIohnR2r.css"></head> <body class="h-full"> <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-slate-900 focus:px-3 focus:py-2 focus:text-sm focus:text-white"> رفتن به محتوای اصلی </a> <div class="pointer-events-none fixed inset-0 -z-10 hidden bg-grid-light bg-[size:32px_32px] opacity-[0.27] dark:block dark:bg-grid-dark dark:opacity-[0.22]"></div> <header class="sticky top-0 z-50 border-b border-slate-200/65 bg-white/80 backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-950/90"> <div class="site-frame site-frame--wide flex items-center justify-between py-3"> <a href="/" class="group"> <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-slate-900 transition group-hover:text-accent-600 dark:text-slate-50 dark:group-hover:text-sky-300">
+Pedram Sarani
+</p> <p class="mt-1 text-[11px] font-medium uppercase tracking-[0.11em] text-slate-500 dark:text-slate-300">یادداشت‌های SRE و DevOps</p> </a> <nav aria-label="ناوبری اصلی" class="hidden items-center gap-2 lg:flex"> <a href="/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> خانه </a><a href="/articles/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> مقالات </a><a href="/quick-notes/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> نکته‌های سریع </a><a href="/learning-paths/" aria-current="page" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none bg-sky-100 text-slate-900 dark:bg-sky-900/55 dark:text-sky-100"> مسیرهای یادگیری </a><a href="/resume/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> رزومه </a><a href="/about/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> درباره </a><a href="/contact/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> تماس </a> <a href="/search/" class="rounded-lg border px-3 py-2 text-sm font-medium transition ltr:ml-2 rtl:mr-2 border-slate-300 bg-white/80 text-slate-700 hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> جست‌وجو </a>  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button> <script type="module">const o=document.documentElement,a=Array.from(document.querySelectorAll("[data-theme-toggle]")),c=()=>{const t=localStorage.getItem("theme");return t==="light"||t==="dark"?t:"dark"},s=t=>{const e=t==="dark";o.classList.toggle("dark",e),o.dataset.theme=t;for(const r of a){const n=r.querySelector(".theme-icon");n&&(n.textContent=e?"Light":"Dark"),r.setAttribute("aria-pressed",String(e))}};s(c());for(const t of a)t.addEventListener("click",()=>{const e=o.classList.contains("dark")?"light":"dark";localStorage.setItem("theme",e),s(e)});</script> </nav> <div class="flex items-center gap-2 lg:hidden">  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button>  <button id="mobile-nav-toggle" type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/85 px-3 text-xs font-semibold uppercase tracking-wider text-slate-700 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50" aria-controls="mobile-nav" aria-expanded="false" data-menu-label="منو" data-close-label="بستن"> منو </button> </div> </div> <div id="mobile-nav-backdrop" class="fixed inset-0 z-40 hidden bg-slate-950/55 lg:hidden" aria-hidden="true"></div> <nav id="mobile-nav" aria-label="ناوبری موبایل" class="fixed right-3 top-[68px] z-50 hidden w-[min(90vw,360px)] rounded-2xl border border-slate-200 bg-white p-3 shadow-panel dark:border-slate-700 dark:bg-slate-950 lg:hidden"> <ul class="space-y-1.5"> <li> <a href="/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> خانه </a> </li><li> <a href="/articles/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> مقالات </a> </li><li> <a href="/quick-notes/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> نکته‌های سریع </a> </li><li> <a href="/learning-paths/" aria-current="page" class="block rounded-lg px-3 py-2 text-sm font-medium transition bg-sky-100 text-slate-900 dark:bg-sky-900/55 dark:text-sky-100"> مسیرهای یادگیری </a> </li><li> <a href="/resume/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> رزومه </a> </li><li> <a href="/about/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> درباره </a> </li><li> <a href="/contact/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> تماس </a> </li><li> <a href="/search/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> جست‌وجو </a> </li> </ul> </nav> </header> <script type="module">const t=document.querySelector("#mobile-nav-toggle"),a=document.querySelector("#mobile-nav"),d=document.querySelector("#mobile-nav-backdrop"),n=e=>{!t||!a||!d||(a.classList.toggle("hidden",!e),d.classList.toggle("hidden",!e),t.setAttribute("aria-expanded",String(e)),t.textContent=e?t.dataset.closeLabel??"Close":t.dataset.menuLabel??"Menu",document.body.classList.toggle("overflow-hidden",e))};t?.addEventListener("click",()=>{const e=t.getAttribute("aria-expanded")==="true";n(!e)});d?.addEventListener("click",()=>n(!1));a?.querySelectorAll("a").forEach(e=>{e.addEventListener("click",()=>n(!1))});window.addEventListener("keydown",e=>{e.key==="Escape"&&n(!1)});</script> <main id="main-content" data-content-width="docs" class="site-frame min-h-[76vh] py-10 md:py-14 site-frame--docs">  <div class="mb-8 flex flex-wrap gap-3"> <a href="/learning-paths/" class="chip">بازگشت به مسیرها</a>  </div> <article class="space-y-8"> <header class="panel overflow-hidden"> <div class="grid gap-0 xl:grid-cols-[minmax(0,1fr)_minmax(19rem,24rem)]"> <div class="p-7 md:p-10 xl:p-12"> <p class="kicker">مسیر یادگیری</p> <h1 class="mt-4 max-w-5xl font-display text-4xl font-semibold leading-tight tracking-tight text-slate-900 dark:text-slate-100 md:text-5xl"> مسیر ترافیک در Kubernetes؛ از Pod تا Service و Gateway </h1> <p class="learning-path-hero-description mt-4 text-lg leading-8 muted">در این مسیر یاد می‌گیریم ترافیک در کوبرنتیز واقعاً از کجا عبور می‌کند؛ از ارتباط Pod و Service تا Gateway API، و لایه‌هایی مثل DNS، EndpointSlice، kube-proxy، NAT، conntrack و NetworkPolicy.</p> </div> <aside class="border-t border-slate-200/80 p-6 dark:border-slate-800 md:p-8 xl:border-r xl:border-t-0"> <p class="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">جزئیات مسیر</p> <dl class="grid gap-3 sm:grid-cols-2 xl:grid-cols-1"> <div class="rounded-xl border border-slate-200 bg-white/70 p-4 dark:border-slate-800 dark:bg-slate-900/65"> <dt class="text-xs font-semibold text-slate-500 dark:text-slate-400">سطح</dt> <dd class="mt-1 font-display text-lg font-semibold text-slate-900 dark:text-slate-100">متوسط</dd> </div><div class="rounded-xl border border-slate-200 bg-white/70 p-4 dark:border-slate-800 dark:bg-slate-900/65"> <dt class="text-xs font-semibold text-slate-500 dark:text-slate-400">تاریخ انتشار</dt> <dd class="mt-1 font-display text-lg font-semibold text-slate-900 dark:text-slate-100">۴ تیر ۱۴۰۵</dd> </div><div class="rounded-xl border border-slate-200 bg-white/70 p-4 dark:border-slate-800 dark:bg-slate-900/65"> <dt class="text-xs font-semibold text-slate-500 dark:text-slate-400">درس‌ها</dt> <dd class="mt-1 font-display text-lg font-semibold text-slate-900 dark:text-slate-100">۴ درس</dd> </div> </dl> <div class="mt-5 flex flex-wrap gap-2"> <span class="chip font-mono text-[11px]" dir="ltr">#kubernetes</span><span class="chip font-mono text-[11px]" dir="ltr">#networking</span><span class="chip font-mono text-[11px]" dir="ltr">#traffic-flow</span><span class="chip font-mono text-[11px]" dir="ltr">#service-discovery</span><span class="chip font-mono text-[11px]" dir="ltr">#platform-engineering</span><span class="chip font-mono text-[11px]" dir="ltr">#troubleshooting</span> </div> </aside> </div> </header> <div class="grid items-start gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,24rem)]"> <section class="panel p-7 md:p-10"> <div class="article-prose"> <p>این مسیر یادگیری (Learning Path) برای زمانی است که می‌خواهیم تقریبا کل استک شبکه کوبرنتیز را فقط از روی YAML و manifest نفهمیم. چون واقعیت این است که مسیر traffic در کلاستر همیشه به آن سادگی که در manifest دیده می‌شود نیست.</p>
+<p>گاهی یک پاد به پاد دیگر وصل می‌شود. گاهی یک پاد اسم یک Service را صدا می‌زند. گاهی هم یک کلاینت مثلا یک کاربرنهایی از بیرون کلاستر از طریق NodePort، LoadBalancer، Ingress یا جدیدتر Gateway API وارد می‌شود. در همه این حالت‌ها، پشت صحنه چند لایه با هم کار می‌کنند؛ از DNS و route تا Service Discovery و NAT، از انتخاب backend تا conntrack و NetworkPolicy، و در نهایت CNI.</p>
+<p>هدف این Learning Path این است که این لایه‌ها را جداگانه باز کنیم، بعد آرام‌آرام آن‌ها را کنار هم بگذاریم. طوری که وقتی در production مشکلی پیش آمد، فقط به manifest نگاه نکنیم و حدس نزنیم؛ بتوانیم واقعاً مسیر request را دنبال کنیم.</p>
+<p>در هر بخش سعی می‌کنیم فقط به تئوری بسنده نکنیم. سناریوی عملی، مسیر troubleshooting، خطاهای رایج و نکاتی که در محیط واقعی اهمیت پیدا می‌کنند هم هستند. این صفحه بیشتر نقش نقشه راه را دارد؛ یعنی نشان می‌دهد هر بخش کجای داستان Kubernetes networking قرار می‌گیرد.</p>
+<h2 id="این-مسیر-برای-چه-کسی-مناسب-است">این مسیر برای چه کسی مناسب است؟</h2>
+<p>این مسیر برای کسی مناسب است که با مفاهیم پایه Kubernetes آشناست؛ می‌داند Pod چیست، Service چه کاری می‌کند، Deployment چه نقشی دارد و Node یعنی چه.</p>
+<p>اما اگر هنوزسؤال است که وقتی یک request داخل کلاستر حرکت می‌کند دقیقاً از کجا رد می‌شود، این مسیر به همین ساختار میپردازد. شاید Service را می‌شناسیم، ولی ندانیم ClusterIP واقعاً کجاست. شاید بدانیم DNS اسم Service را resolve می‌کند، اما ندانیم بعد از resolve شدن چه اتفاقی برای packet می‌افتد. یا شاید درگیر خطایی شده باشیم که همه‌چیز در YAML درست به نظر می‌رسد، ولی ارتباط برقرار نمی‌شود.</p>
+<p><strong>اینجاست که باید مسیر را لایه‌به‌لایه دید.</strong></p>
+<h2 id="چرا-این-مسیر-مهم-است">چرا این مسیر مهم است؟</h2>
+<p>در کوبرنتیز چیزی که می‌بینیم همیشه همان چیزی نیست که در مسیر packet اتفاق می‌افتد.</p>
+<p>مثلاً وقتی یک Pod به ClusterIP یک Service وصل می‌شود، آن IP معمولاً یک process واقعی یا interface جداگانه نیست. جایی در کلاستر یک سرویس فیزیکی با آن IP ننشسته که request را بگیرد. پشت صحنه، EndpointSliceها backendهای واقعی را نگه می‌دارند، kube-proxy روی nodeها rule می‌سازد، kernel کار NAT را انجام می‌دهد و conntrack وضعیت connection را حفظ می‌کند.</p>
+<p>ممکن است DNS درست جواب بدهد، ولی Service هیچ endpoint فعالی نداشته باشد. شاید endpoint وجود داشته باشد، ولی NetworkPolicy اجازه عبور traffic را ندهد. گاهی kube-proxy رول ها را ساخته باشد، اما conntrack باعث شود connection قدیمی هنوز به backend قبلی برود. یا مشکل اصلاً داخل cluster نباشد و در مسیر ورود از LoadBalancer یا Gateway باشد.</p>
+<p>برای همین troubleshooting شبکه در کوبرنتیز فقط با <code>kubectl get svc</code> یا نگاه کردن به YAML کامل نمی‌شود. باید بدانیم request از کدام namespace شبکه خارج می‌شود، اسم DNS چطور resolve می‌شود، Service چطور به EndpointSlice وصل می‌شود، Service VIP در چه مرحله‌ای به ای پی پاد تبدیل می‌شود، backend چطور انتخاب می‌شود و response از چه مسیری برمی‌گردد.</p>
+<h2 id="پیشنیازهای-این-مسیر">پیش‌نیازهای این مسیر</h2>
+<p>برای دنبال کردن این مسیر لازم نیست متخصص کوبرنتیز یا شبکه باشیم، ولی بهتر است این مفاهیم را در حد پایه بشناسیم:</p>
+<ul>
+<li>Pod چیست و چطور اجرا می‌شود</li>
+<li>Service چه مشکلی را حل می‌کند</li>
+<li>Deployment و نقش آن در مدیریت Podها</li>
+<li>Node و نقش آن در کلاستر</li>
+<li>Namespace در Kubernetes</li>
+<li>ClusterIP به‌عنوان نوعی از Service</li>
+<li>kubelet و نقش آن روی node</li>
+<li>اینکه CNI چیست و چرا کلاستر به آن نیاز دارد</li>
+<li>اینکه DNS در Kubernetes برای چه کاری است</li>
+</ul>
+<p>تفاوت این‌ها با آنچه در این مسیر یاد می‌گیریم این است: پیش‌نیازها را باید قبلاً دیده باشیم. اما <em>نقش</em> هر کدام در مسیر واقعی traffic — مثلاً اینکه CNI دقیقاً کجای مسیر packet وارد می‌شود، یا DNS چطور اسم Service را resolve می‌کند — همان چیزی است که اینجا باز می‌کنیم.</p>
+<h2 id="نقشهٔ-learning-path">نقشهٔ Learning Path</h2>
+<p>کل این مسیر را به چند بخش تقسیم کرده‌ام. اول یک مدل ذهنی کلی می‌سازیم، بعد لایه‌به‌لایه جلو می‌رویم.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>بخش</th><th>موضوع</th><th>وضعیت</th></tr></thead><tbody><tr><td>۱</td><td>مدل ذهنی Kubernetes networking</td><td>✅ منتشرشده</td></tr><tr><td>۲</td><td>DNS و Service Discovery در Kubernetes</td><td>✅ منتشرشده</td></tr><tr><td>۳</td><td>شبکه Podها، CNI، route، overlay و MTU</td><td>✅ منتشرشده</td></tr><tr><td>۴</td><td>مسیر Pod to Pod</td><td>✅ منتشرشده</td></tr><tr><td>۵</td><td>مسیر Pod to Service و EndpointSlice</td><td>🔜 به‌زودی</td></tr><tr><td>۶</td><td>kube-proxy، Service VIP، iptables، nftables و IPVS</td><td>🔜 به‌زودی</td></tr><tr><td>۷</td><td>conntrack، NAT، connection reuse و مسیر برگشت</td><td>🔜 به‌زودی</td></tr><tr><td>۸</td><td>NetworkPolicy، segmentation و failure modeهای CNI</td><td>🔜 به‌زودی</td></tr><tr><td>۹</td><td>مسیر external traffic با NodePort و LoadBalancer</td><td>🔜 به‌زودی</td></tr><tr><td>۱۰</td><td>مسیر L7 با Ingress و Gateway API</td><td>🔜 به‌زودی</td></tr><tr><td>۱۱</td><td>Observability و ابزارهای troubleshooting شبکه</td><td>🔜 به‌زودی</td></tr><tr><td>۱۲</td><td>سناریوهای واقعی troubleshooting مرحله‌به‌مرحله</td><td>🔜 به‌زودی</td></tr></tbody></table>
+<h2 id="بخش-اول-مدل-ذهنی-kubernetes-networking">بخش اول: مدل ذهنی Kubernetes networking</h2>
+<p>در بخش اول، قرار نیست مستقیم برویم سراغ iptables یا Gateway. اول باید تصویر کلی را درست کنیم.</p>
+<p>در کوبرنتیز چند نوع IP داریم که هرکدام نقش متفاوتی دارند: Pod IP، Service IP، Node IP و external IP. اگر این‌ها را با هم قاطی کنیم، خیلی از رفتارهای شبکه گیج‌کننده می‌شود. مثلاً ممکن است فکر کنیم ClusterIP خودش یک مقصد واقعی است، در حالی که بیشتر شبیه یک آدرس مجازی برای رسیدن به backendها عمل می‌کند.</p>
+<p>در این بخش جایگاه اجزای اصلی را مشخص می‌کنیم:</p>
+<ul>
+<li>نقش DNS برای پیدا کردن نام‌ها</li>
+<li>نقش Service برای تعریف یک ورودی پایدار</li>
+<li>نقش EndpointSlice برای نگه داشتن backendهای واقعی</li>
+<li>نقش kube-proxy برای آماده کردن ruleهای لازم روی nodeها</li>
+<li>نقش CNI برای اتصال شبکه‌ای Podها</li>
+<li>نقش route برای هدایت packet بین nodeها</li>
+<li>نقش NetworkPolicy برای محدود کردن traffic</li>
+<li>نقش conntrack برای نگه داشتن وضعیت connectionها</li>
+</ul>
+<p>بعد از این بخش، وقتی یک request را تصور می‌کنیم، فقط یک فلش ساده از Pod به Service نمی‌بینیم؛ می‌دانیم پشت آن فلش چند مرحله واقعی وجود دارد.</p>
+<h2 id="بخش-دوم-dns-و-service-discovery-در-کوبرنتیز">بخش دوم: DNS و Service Discovery در کوبرنتیز</h2>
+<p>در بخش دوم، همان جمله ساده بخش اول را باز می‌کنیم: وقتی یک پاد اسم یک سرویس را صدا می‌زند، قبل از هر چیز باید بفهمیم این اسم چطور به یک مقصد قابل استفاده تبدیل می‌شود.</p>
+<p>اینجا هنوز به kube-proxy، NAT و conntrack نرسیده‌ایم. فعلاً با لایه‌ای طرفیم که معمولاً بی‌صدا کار می‌کند، اما وقتی خراب شود خودش را با timeout، کندی‌های عجیب یا خطاهای مبهم نشان می‌دهد.</p>
+<p>در این بخش مسیر DNS را از داخل پاد دنبال می‌کنیم؛ از فایل resolv.conf و رفتار resolver تا CoreDNS، رکوردهای سرویس، headless service، search domain، ndots، cache و NodeLocal DNSCache.<br/>
+هدف این است که موقع خطایابی، قبل از اینکه سریع سراغ سرویس، endpoint یا ruleهای شبکه برویم، بدانیم آیا نام اصلاً درست و به‌موقع resolve شده یا نه.</p>
+<h3 id="بخش-سوم-شبکه-پادها-cni-route-overlay-و-mtu">بخش سوم: شبکه پادها، CNI، route، overlay و MTU</h3>
+<p>در بخش سوم، از لایه naming و سرویس پایین‌تر می‌رویم و سراغ خود شبکه پادها می‌رویم. یعنی از همان لحظه‌ای که یک پاد ساخته می‌شود ببینیم شبکه‌اش چطور آماده می‌شود، آی‌پی را از کجا می‌گیرد و <code>CNI</code> دقیقاً کجای این فرایند وارد می‌شود.<br/>
+بعد مسیر واقعی پکت را دنبال می‌کنیم؛ اول وقتی دو پاد روی یک نود هستند و بعد وقتی مقصد روی نود دیگری است. اینجا کم‌کم چیزهایی مثل نتورک نیم‌اسپیس، <code>veth</code>، <code>IPAM</code>، route، تونل و <code>native routing</code> معنی واقعی پیدا می‌کنند و می‌بینیم چرا مسیر ترافیک در همه پیاده‌سازی‌ها یک‌شکل نیست.<br/>
+در نهایت هم به <code>MTU</code> و خطاهایی می‌رسیم که ممکن است همه‌چیز در ظاهر درست باشد، route هم وجود داشته باشد، اما پکت باز به مقصد نرسد. هدف این بخش این است که موقع خطایابی فقط نپرسیم «چه <code>CNI</code>ای نصب است؟»، بلکه بتوانیم مسیر واقعی پکت را روی شبکه پیدا کنیم.</p>
+<h3 id="بخش-چهارم-مسیر-pod-to-pod-سفر-واقعی-یک-پکت">بخش چهارم: مسیر Pod to Pod؛ سفر واقعی یک پکت</h3>
+<p>در بخش چهارم، همان شبکه‌ای را که تا اینجا ساختیم این بار از نگاه خود پکت می‌بینیم. فرض می‌کنیم یک پاد، ای‌پی پاد دیگری را می‌داند و مستقیم به آن وصل می‌شود؛ بعد قدم‌به‌قدم دنبال می‌کنیم که پکت داخل همان نود چه مسیری می‌رود و وقتی مقصد روی نود دیگری باشد چه چیزهایی وارد مسیر می‌شوند.<br/>
+اینجا کم‌کم تفاوت <code>same-node</code> و <code>cross-node</code>، مسیر برگشت، <code>source IP</code> و نقش <code>conntrack</code> معنی عملی پیدا می‌کنند. در کنارش می‌بینیم چرا مسیر واقعی در همه CNIها یک‌شکل نیست و چطور bridge، routing یا dataplaneهای مبتنی بر eBPF می‌توانند شکل این سفر را عوض کنند. هدف این بخش این است که وقتی ارتباط مستقیم بین دو پاد خراب می‌شود، بتوانیم واقعاً بفهمیم پکت کجا گیر کرده است.</p>
+<h2 id="بعد-از-پایان-این-مسیر-چه-یاد-میگیری">بعد از پایان این مسیر چه یاد می‌گیری؟</h2>
+<p>در پایان این Learning Path باید بتوانیم با دید واقعی‌تر و نزدیک‌تر به production به این سؤال‌ها جواب بدهیم:</p>
+<ul>
+<li>وقتی یک Pod به Pod دیگر وصل می‌شود، packet دقیقاً از کجا عبور می‌کند؟</li>
+<li>وقتی یک Pod نام یک Service را resolve می‌کند، DNS دقیقاً چه کاری انجام می‌دهد؟</li>
+<li>وقتی request به Service می‌رسد، backend چطور انتخاب می‌شود؟</li>
+<li>چرا ClusterIP خودش endpoint واقعی نیست؟</li>
+<li>kube-proxy دقیقاً چه چیزی را روی node تغییر می‌دهد؟</li>
+<li>تفاوت iptables، nftables و IPVS در kube-proxy چیست؟</li>
+<li>conntrack چه نقشی در NAT و Service traffic دارد؟</li>
+<li>چرا یک connection قدیمی ممکن است همچنان به backend قبلی برود؟</li>
+<li>NetworkPolicy دقیقاً کجا traffic را محدود می‌کند؟</li>
+<li>مسیر traffic از بیرون cluster تا workload داخلی چطور است؟</li>
+<li>source IP در کدام مسیرها حفظ می‌شود و کجا از بین می‌رود؟</li>
+<li>Gateway API، Ingress، NodePort و LoadBalancer از نظر مسیر واقعی traffic چه تفاوتی دارند؟</li>
+<li>موقع troubleshooting از کدام لایه باید شروع کرد و مرحله‌به‌مرحله چه چیزهایی را باید چک کرد؟</li>
+</ul>
+<h2 id="نتیجه">نتیجه</h2>
+<p>Kubernetes networking از آن موضوع‌هایی است که اگر فقط در حد manifest یاد گرفته شود، خیلی زود دردسرساز می‌شود.</p>
+<p>تا وقتی همه‌چیز درست کار می‌کند، شاید لازم نباشد بدانیم packet از کجا عبور کرده. اما وقتی یک Service جواب نمی‌دهد، یک backend اشتباه انتخاب می‌شود، DNS درست resolve می‌شود ولی connection برقرار نمی‌شود، یا traffic ورودی از Gateway به workload نمی‌رسد، آن‌وقت همین جزئیات تعیین‌کننده می‌شوند.</p>
+<p>این Learning Path قرار است همین فاصله را پر کند؛ فاصله بین «من Service ساختم» تا «می‌دانم packet واقعاً چه مسیری را طی کرده است».</p> </div> </section> <aside class="xl:sticky xl:top-24"> <section class="panel p-6 md:p-7" aria-labelledby="course-lessons"> <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">درس‌ها</p> <h2 id="course-lessons" class="mt-2 font-display text-2xl font-semibold text-slate-900 dark:text-slate-100">فهرست درس‌های مسیر</h2> <ol class="mt-5 space-y-3"> <li> <a href="/learning-paths/kubernetes-traffic-flow/01-kubernetes-networking-mental-model/" class="flex gap-3 rounded-xl border border-slate-200 bg-white/75 p-4 transition hover:border-accent-500 dark:border-slate-800 dark:bg-slate-900/70 dark:hover:border-sky-500"> <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sky-100 font-mono text-sm font-semibold text-sky-800 dark:bg-sky-900/45 dark:text-sky-200"> 1 </span> <span class="min-w-0"> <span class="block font-display text-lg font-semibold leading-7 text-slate-900 dark:text-slate-100">مدل ذهنی Kubernetes networking؛ از Pod IP تا Service و Gateway</span> <span class="mt-1 block text-xs font-semibold text-slate-500 dark:text-slate-400">۲۱ دقیقه مطالعه</span> </span> </a> </li><li> <a href="/learning-paths/kubernetes-traffic-flow/02-kubernetes-dns-service-discovery/" class="flex gap-3 rounded-xl border border-slate-200 bg-white/75 p-4 transition hover:border-accent-500 dark:border-slate-800 dark:bg-slate-900/70 dark:hover:border-sky-500"> <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sky-100 font-mono text-sm font-semibold text-sky-800 dark:bg-sky-900/45 dark:text-sky-200"> 2 </span> <span class="min-w-0"> <span class="block font-display text-lg font-semibold leading-7 text-slate-900 dark:text-slate-100">بخش دوم: DNS و Service Discovery در Kubernetes</span> <span class="mt-1 block text-xs font-semibold text-slate-500 dark:text-slate-400">۳۰ دقیقه مطالعه</span> </span> </a> </li><li> <a href="/learning-paths/kubernetes-traffic-flow/03-kubernetes-pod-networking-cni/" class="flex gap-3 rounded-xl border border-slate-200 bg-white/75 p-4 transition hover:border-accent-500 dark:border-slate-800 dark:bg-slate-900/70 dark:hover:border-sky-500"> <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sky-100 font-mono text-sm font-semibold text-sky-800 dark:bg-sky-900/45 dark:text-sky-200"> 3 </span> <span class="min-w-0"> <span class="block font-display text-lg font-semibold leading-7 text-slate-900 dark:text-slate-100">بخش سوم: شبکه پادها، CNI و مسیر واقعی پکت</span> <span class="mt-1 block text-xs font-semibold text-slate-500 dark:text-slate-400">۲۶ دقیقه مطالعه</span> </span> </a> </li><li> <a href="/learning-paths/kubernetes-traffic-flow/04-kubernetes-pod-to-pod-traffic-path/" class="flex gap-3 rounded-xl border border-slate-200 bg-white/75 p-4 transition hover:border-accent-500 dark:border-slate-800 dark:bg-slate-900/70 dark:hover:border-sky-500"> <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sky-100 font-mono text-sm font-semibold text-sky-800 dark:bg-sky-900/45 dark:text-sky-200"> 4 </span> <span class="min-w-0"> <span class="block font-display text-lg font-semibold leading-7 text-slate-900 dark:text-slate-100">بخش چهارم: مسیر Pod to Pod؛ سفر واقعی یک پکت</span> <span class="mt-1 block text-xs font-semibold text-slate-500 dark:text-slate-400">۱۹ دقیقه مطالعه</span> </span> </a> </li> </ol> </section> </aside> </div> </article>  </main> <footer class="mt-0 border-t border-slate-200/70 bg-white/75 dark:border-slate-800/75 dark:bg-slate-950/70"> <div class="site-frame site-frame--wide flex flex-col gap-5 py-7 md:flex-row md:items-center md:justify-between"> <div class="max-w-2xl"> <p class="font-display text-lg font-semibold text-slate-900 dark:text-slate-100">Pedram Sarani</p> <p class="mt-2 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300"> یادداشت‌های SRE و DevOps درباره Kubernetes reliability، Linux internals، CI/CD، GitOps، Observability و پایداری در production. </p> <p class="mt-3 text-xs uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">(c) 2026 همه حقوق محفوظ است.</p> </div> <div class="flex flex-wrap gap-2 text-sm md:flex-nowrap"> <a href="https://github.com/saranipedram" target="_blank" rel="noreferrer" class="chip"> GitHub </a><a href="https://devdocs.ir" target="_blank" rel="noreferrer" class="chip"> وبلاگ / نمونه‌کار </a><a href="https://www.linkedin.com/in/pedram-sarani/" target="_blank" rel="noreferrer" class="chip"> LinkedIn </a><a href="/rss.xml" class="chip"> RSS </a> </div> </div> </footer> <script>
+  (() => {
+    const onReady = (callback) => {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback, { once: true });
+      } else {
+        callback();
+      }
+    };
+
+    const readCode = (pre) => {
+      const code = pre.querySelector('code') ?? pre;
+      const lines = code.querySelectorAll('.line');
+
+      if (lines.length > 0) {
+        return Array.from(lines)
+          .map((line) => line.textContent ?? '')
+          .join('\n')
+          .replace(/\n+$/u, '');
+      }
+
+      return (code.textContent ?? '').replace(/\n+$/u, '');
+    };
+
+    const copyText = async (text) => {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return;
+        } catch {
+          // Fall through to the selection-based copy path for stricter browser contexts.
+        }
+      }
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.inset = '0 auto auto 0';
+      textarea.style.opacity = '0';
+      textarea.style.pointerEvents = 'none';
+
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+
+      const copied = document.execCommand('copy');
+      textarea.remove();
+
+      if (!copied) {
+        throw new Error('Copy failed');
+      }
+    };
+
+    const applyButtonStyles = (button) => {
+      button.style.position = 'static';
+      button.style.inset = 'auto';
+      button.style.zIndex = 'auto';
+      button.style.border = '1px solid rgba(148, 163, 184, 0.55)';
+      button.style.borderRadius = '9999px';
+      button.style.background = 'rgba(255, 255, 255, 0.9)';
+      button.style.color = '#334155';
+      button.style.cursor = 'pointer';
+      button.style.direction = 'ltr';
+      button.style.fontFamily = "'IBM Plex Sans', 'Vazirmatn', sans-serif";
+      button.style.fontSize = '0.72rem';
+      button.style.fontWeight = '700';
+      button.style.lineHeight = '1';
+      button.style.padding = '0.46rem 0.72rem';
+      button.style.textAlign = 'center';
+      button.style.userSelect = 'none';
+    };
+
+    onReady(() => {
+      const isFa = document.documentElement.lang === 'fa';
+      const idleText = isFa ? 'کپی' : 'Copy';
+      const doneText = isFa ? 'کپی شد' : 'Copied';
+      const failedText = isFa ? 'خطا' : 'Error';
+      const label = isFa ? 'کپی کردن کد' : 'Copy code';
+
+      document.querySelectorAll('.article-prose pre').forEach((pre) => {
+        if (pre.dataset.copyReady === 'true' || pre.closest('.code-block-wrapper')) {
+          return;
+        }
+
+        pre.dataset.copyReady = 'true';
+        pre.style.marginTop = '0';
+        pre.style.paddingTop = '1rem';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        wrapper.style.direction = 'ltr';
+        wrapper.style.margin = '1.75rem 0';
+        wrapper.style.maxWidth = 'none';
+        wrapper.style.width = '100%';
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'code-block-toolbar';
+        toolbar.style.display = 'flex';
+        toolbar.style.justifyContent = 'flex-end';
+        toolbar.style.marginBottom = '0.5rem';
+        toolbar.style.width = '100%';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy-button';
+        button.setAttribute('aria-label', label);
+        button.textContent = idleText;
+        applyButtonStyles(button);
+
+        button.addEventListener('click', async () => {
+          try {
+            await copyText(readCode(pre));
+            button.textContent = doneText;
+            button.dataset.state = 'copied';
+            button.style.borderColor = 'rgba(34, 197, 94, 0.55)';
+            button.style.color = '#15803d';
+          } catch {
+            button.textContent = failedText;
+            button.dataset.state = 'error';
+            button.style.borderColor = 'rgba(239, 68, 68, 0.6)';
+            button.style.color = '#b91c1c';
+          }
+
+          window.setTimeout(() => {
+            button.textContent = idleText;
+            delete button.dataset.state;
+            applyButtonStyles(button);
+          }, 1600);
+        });
+
+        pre.parentNode?.insertBefore(wrapper, pre);
+        toolbar.appendChild(button);
+        wrapper.appendChild(toolbar);
+        wrapper.appendChild(pre);
+      });
+    });
+  })();
+</script> </body></html>

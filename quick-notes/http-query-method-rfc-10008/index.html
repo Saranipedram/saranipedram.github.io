@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" class="h-full scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap.xml"><script>
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const dark = saved ? saved === 'dark' : true;
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script><script async src="https://www.googletagmanager.com/gtag/js?id=G-0M3EMVVS2J"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-0M3EMVVS2J');
+    </script><title>HTTP بالاخره برای queryهای بزرگ یک جواب تمیز دارد: QUERY | نکته‌های سریع</title><meta name="description" content="بعد از سال‌ها بحث در IETF، متد QUERY در قالب RFC 10008 استاندارد شد؛ راهی برای اینکه queryهای بزرگ را مثل POST داخل body بفرستیم، اما همچنان به HTTP بگوییم این درخواست read-only است و تکرار شدنش خطرناک نیست."><link rel="canonical" href="https://devdocs.ir/quick-notes/http-query-method-rfc-10008/"><meta property="og:type" content="article"><meta property="og:title" content="HTTP بالاخره برای queryهای بزرگ یک جواب تمیز دارد: QUERY | نکته‌های سریع"><meta property="og:description" content="بعد از سال‌ها بحث در IETF، متد QUERY در قالب RFC 10008 استاندارد شد؛ راهی برای اینکه queryهای بزرگ را مثل POST داخل body بفرستیم، اما همچنان به HTTP بگوییم این درخواست read-only است و تکرار شدنش خطرناک نیست."><meta property="og:url" content="https://devdocs.ir/quick-notes/http-query-method-rfc-10008/"><meta property="og:image" content="https://devdocs.ir/images/og/quick-notes/http-query-method-rfc-10008/ogImage.png"><meta property="og:site_name" content="Pedram Sarani | SRE / DevOps Engineer"><meta property="og:locale" content="fa_IR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="HTTP بالاخره برای queryهای بزرگ یک جواب تمیز دارد: QUERY | نکته‌های سریع"><meta name="twitter:description" content="بعد از سال‌ها بحث در IETF، متد QUERY در قالب RFC 10008 استاندارد شد؛ راهی برای اینکه queryهای بزرگ را مثل POST داخل body بفرستیم، اما همچنان به HTTP بگوییم این درخواست read-only است و تکرار شدنش خطرناک نیست."><meta name="twitter:image" content="https://devdocs.ir/images/og/quick-notes/http-query-method-rfc-10008/ogImage.png"><meta name="robots" content="index,follow"><meta property="article:published_time" content="2026-07-07T00:00:00.000Z"><meta property="article:modified_time" content="2026-07-07T00:00:00.000Z"><link rel="stylesheet" href="/_astro/about.CfKbJgE5.css">
+<link rel="stylesheet" href="/_astro/_slug_.C5RoJ5N6.css">
+<style>.references-block[data-astro-cid-sekel5fk]{margin-block-start:3rem;max-width:100%;border-block-start:1px solid color-mix(in srgb,#cbd5e1 72%,transparent);padding-block-start:1.75rem}.dark .references-block[data-astro-cid-sekel5fk]{border-block-start-color:color-mix(in srgb,#334155 78%,transparent)}.references-block__title[data-astro-cid-sekel5fk]{margin:0;color:#0f172a;font-size:1.35rem;font-weight:650;line-height:1.35}.dark .references-block__title[data-astro-cid-sekel5fk]{color:#f8fafc}.references-block__list[data-astro-cid-sekel5fk]{display:grid;gap:.8rem;margin:1rem 0 0;padding:0;list-style:none}.references-block__item[data-astro-cid-sekel5fk]{border:1px solid color-mix(in srgb,#cbd5e1 70%,transparent);border-radius:.5rem;background:color-mix(in srgb,#f8fafc 76%,transparent);padding:.95rem 1rem}.dark .references-block__item[data-astro-cid-sekel5fk]{border-color:color-mix(in srgb,#334155 82%,transparent);background:color-mix(in srgb,#0f172a 70%,transparent)}.references-block__item-header[data-astro-cid-sekel5fk]{display:flex;flex-wrap:wrap;align-items:baseline;gap:.45rem .65rem}.references-block__link[data-astro-cid-sekel5fk]{color:#0369a1;font-weight:700;overflow-wrap:anywhere;text-decoration-color:color-mix(in srgb,#0ea5e9 58%,transparent);text-decoration-thickness:.12em;text-underline-offset:.2em;unicode-bidi:isolate}.references-block__link[data-astro-cid-sekel5fk]:hover{color:#0284c7}.dark .references-block__link[data-astro-cid-sekel5fk]{color:#7dd3fc;text-decoration-color:color-mix(in srgb,#38bdf8 60%,transparent)}.dark .references-block__link[data-astro-cid-sekel5fk]:hover{color:#bae6fd}.references-block__badge[data-astro-cid-sekel5fk]{border:1px solid color-mix(in srgb,#0ea5e9 26%,transparent);border-radius:9999px;background:color-mix(in srgb,#e0f2fe 74%,transparent);color:#0369a1;font-size:.72rem;font-weight:700;line-height:1.4;padding:.12rem .5rem;white-space:nowrap}.dark .references-block__badge[data-astro-cid-sekel5fk]{border-color:color-mix(in srgb,#38bdf8 30%,transparent);background:color-mix(in srgb,#082f49 64%,transparent);color:#bae6fd}.references-block__meta[data-astro-cid-sekel5fk],.references-block__note[data-astro-cid-sekel5fk]{margin:.45rem 0 0;color:#475569;font-size:.92rem;line-height:1.75}.dark .references-block__meta[data-astro-cid-sekel5fk],.dark .references-block__note[data-astro-cid-sekel5fk]{color:#cbd5e1}.references-block__meta[data-astro-cid-sekel5fk]{display:flex;flex-wrap:wrap;gap:.25rem .75rem}.references-block__meta[data-astro-cid-sekel5fk] span[data-astro-cid-sekel5fk]{overflow-wrap:anywhere;unicode-bidi:isolate}.references-block__meta[data-astro-cid-sekel5fk] span[data-astro-cid-sekel5fk]+span[data-astro-cid-sekel5fk]:before{color:color-mix(in srgb,currentColor 42%,transparent);content:"|";margin-inline-end:.75rem}.references-block__note[data-astro-cid-sekel5fk]{max-width:100%}[data-astro-cid-sekel5fk][dir=rtl] .references-block__note[data-astro-cid-sekel5fk]{text-align:justify;-moz-text-align-last:auto;text-align-last:auto;text-justify:inter-word}@media(max-width:640px){.references-block[data-astro-cid-sekel5fk]{margin-block-start:2.5rem;padding-block-start:1.4rem}.references-block__item[data-astro-cid-sekel5fk]{padding:.85rem}}
+</style>
+<link rel="stylesheet" href="/_astro/about.DIohnR2r.css"></head> <body class="h-full"> <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-slate-900 focus:px-3 focus:py-2 focus:text-sm focus:text-white"> رفتن به محتوای اصلی </a> <div class="pointer-events-none fixed inset-0 -z-10 hidden bg-grid-light bg-[size:32px_32px] opacity-[0.27] dark:block dark:bg-grid-dark dark:opacity-[0.22]"></div> <header class="sticky top-0 z-50 border-b border-slate-200/65 bg-white/80 backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-950/90"> <div class="site-frame site-frame--wide flex items-center justify-between py-3"> <a href="/" class="group"> <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-slate-900 transition group-hover:text-accent-600 dark:text-slate-50 dark:group-hover:text-sky-300">
+Pedram Sarani
+</p> <p class="mt-1 text-[11px] font-medium uppercase tracking-[0.11em] text-slate-500 dark:text-slate-300">یادداشت‌های SRE و DevOps</p> </a> <nav aria-label="ناوبری اصلی" class="hidden items-center gap-2 lg:flex"> <a href="/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> خانه </a><a href="/articles/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> مقالات </a><a href="/quick-notes/" aria-current="page" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none bg-sky-100 text-slate-900 dark:bg-sky-900/55 dark:text-sky-100"> نکته‌های سریع </a><a href="/learning-paths/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> مسیرهای یادگیری </a><a href="/resume/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> رزومه </a><a href="/about/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> درباره </a><a href="/contact/" class="rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-none text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-white"> تماس </a> <a href="/search/" class="rounded-lg border px-3 py-2 text-sm font-medium transition ltr:ml-2 rtl:mr-2 border-slate-300 bg-white/80 text-slate-700 hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> جست‌وجو </a>  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button> <script type="module">const o=document.documentElement,a=Array.from(document.querySelectorAll("[data-theme-toggle]")),c=()=>{const t=localStorage.getItem("theme");return t==="light"||t==="dark"?t:"dark"},s=t=>{const e=t==="dark";o.classList.toggle("dark",e),o.dataset.theme=t;for(const r of a){const n=r.querySelector(".theme-icon");n&&(n.textContent=e?"Light":"Dark"),r.setAttribute("aria-pressed",String(e))}};s(c());for(const t of a)t.addEventListener("click",()=>{const e=o.classList.contains("dark")?"light":"dark";localStorage.setItem("theme",e),s(e)});</script> </nav> <div class="flex items-center gap-2 lg:hidden">  <button data-theme-toggle type="button" aria-label="Toggle color theme" aria-pressed="true" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/80 px-3 text-xs font-semibold uppercase tracking-wide text-slate-700 shadow-sm transition hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50 dark:hover:border-sky-400 dark:hover:text-sky-200"> <span class="theme-icon" aria-hidden="true">Dark</span> </button>  <button id="mobile-nav-toggle" type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white/85 px-3 text-xs font-semibold uppercase tracking-wider text-slate-700 dark:border-slate-600 dark:bg-slate-900/95 dark:text-slate-50" aria-controls="mobile-nav" aria-expanded="false" data-menu-label="منو" data-close-label="بستن"> منو </button> </div> </div> <div id="mobile-nav-backdrop" class="fixed inset-0 z-40 hidden bg-slate-950/55 lg:hidden" aria-hidden="true"></div> <nav id="mobile-nav" aria-label="ناوبری موبایل" class="fixed right-3 top-[68px] z-50 hidden w-[min(90vw,360px)] rounded-2xl border border-slate-200 bg-white p-3 shadow-panel dark:border-slate-700 dark:bg-slate-950 lg:hidden"> <ul class="space-y-1.5"> <li> <a href="/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> خانه </a> </li><li> <a href="/articles/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> مقالات </a> </li><li> <a href="/quick-notes/" aria-current="page" class="block rounded-lg px-3 py-2 text-sm font-medium transition bg-sky-100 text-slate-900 dark:bg-sky-900/55 dark:text-sky-100"> نکته‌های سریع </a> </li><li> <a href="/learning-paths/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> مسیرهای یادگیری </a> </li><li> <a href="/resume/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> رزومه </a> </li><li> <a href="/about/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> درباره </a> </li><li> <a href="/contact/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> تماس </a> </li><li> <a href="/search/" class="block rounded-lg px-3 py-2 text-sm font-medium transition text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"> جست‌وجو </a> </li> </ul> </nav> </header> <script type="module">const t=document.querySelector("#mobile-nav-toggle"),a=document.querySelector("#mobile-nav"),d=document.querySelector("#mobile-nav-backdrop"),n=e=>{!t||!a||!d||(a.classList.toggle("hidden",!e),d.classList.toggle("hidden",!e),t.setAttribute("aria-expanded",String(e)),t.textContent=e?t.dataset.closeLabel??"Close":t.dataset.menuLabel??"Menu",document.body.classList.toggle("overflow-hidden",e))};t?.addEventListener("click",()=>{const e=t.getAttribute("aria-expanded")==="true";n(!e)});d?.addEventListener("click",()=>n(!1));a?.querySelectorAll("a").forEach(e=>{e.addEventListener("click",()=>n(!1))});window.addEventListener("keydown",e=>{e.key==="Escape"&&n(!1)});</script> <main id="main-content" data-content-width="article" class="site-frame min-h-[76vh] py-10 md:py-14 site-frame--article">  <div class="mb-8 flex flex-wrap gap-3"> <a href="/quick-notes/" class="chip">بازگشت به نکته‌های سریع</a>  </div> <article class="panel p-6 md:p-8 xl:p-10"> <header class="mb-10 border-b border-slate-200/80 pb-8 text-center dark:border-slate-800"> <p class="kicker">نکته‌های سریع</p> <h1 class="mx-auto mt-4 max-w-4xl text-center font-display text-4xl font-semibold leading-tight tracking-tight text-slate-900 dark:text-slate-100 md:text-5xl"> HTTP بالاخره برای queryهای بزرگ یک جواب تمیز دارد: QUERY </h1> <p class="article-hero-description--fa mx-auto mt-4 max-w-3xl text-center text-lg leading-8 muted">بعد از سال‌ها بحث در IETF، متد QUERY در قالب RFC 10008 استاندارد شد؛ راهی برای اینکه queryهای بزرگ را مثل POST داخل body بفرستیم، اما همچنان به HTTP بگوییم این درخواست read-only است و تکرار شدنش خطرناک نیست.</p> <div class="article-meta mt-6 justify-center text-center text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400"> <span dir="ltr">HTTP</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="ltr">RFC 10008</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span>http</span> <span class="article-meta__separator" aria-hidden="true">|</span> <span dir="rtl">۱۶ تیر ۱۴۰۵</span> </div> <div class="mt-5 flex flex-wrap justify-center gap-2"> <span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#http </span><span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#query-method </span><span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#rfc-10008 </span><span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#api-design </span><span class="chip !cursor-default font-mono text-[11px]" dir="ltr">
+#caching </span> </div> </header> <div class="article-prose article-prose--fa-article"> <p>بلاخره یکی از قدیمی‌ترین بحث‌های HTTP به نتیجه رسید: متد QUERY در قالب RFC 10008 به عنوان Proposed Standard منتشر شد و رسماً وارد ریجستری متدهای HTTP شد. این ایده اول با نام SEARCH جلو رفته بود، اما بعداً اسمش شد QUERY؛ چون SEARCH از قبل در WebDAV سابقه داشت و ممکن بود گیج‌کننده شود.</p>
+<p>ایده اصلی ساده است: query را مثل POST داخل body درخواست بفرست، اما برخلاف POST به زیرساخت HTTP بگو که این درخواست قرار نیست چیزی را تغییر دهد و تکرار شدنش هم خطرناک نیست. در زبان HTTP، یعنی این درخواست safe و idempotent است؛ همین دو ویژگی راه را برای cache و retry خودکار باز می‌کند.</p>
+<p>تا امروز برای queryهای بزرگ دو راه داشتیم و هر دو نصفه بودند:<br/>
+راه اول GET بود که query را داخل URI حمل می‌‌کرد.مشکل فقط شلوغ شدن URL نیست. طول URI ممکن است در یکی از اجزای مسیر درخواست، از client و proxy گرفته تا load balancer و سرور، به محدودیت بخورد و RFC 9110 فقط توصیه می‌کند حداقل ۸۰۰۰ octet پشتیبانی شود؛ URIها خیلی بیشتر از body در log و bookmark ثبت می‌شوند؛ و body در GET هم اصلاً semantics تعریف‌شده ندارد و بعضی پیاده‌سازی‌ها آن را رد می‌کنند.<br/>
+راه دوم همان POST /search آشنا بود. body دارد و محدودیت طول ندارد، اما از دید HTTP، معنی POST این است که «شاید state تغییر کند».نتیجه این می‌شود که مسیر طبیعی cache و retry خودکار را از دست می‌دهیم، چون زیرساخت HTTP نمی‌تواند از روی متد بفهمد این عملیات واقعاً read-only است. عملاً یک عملیات read-only راجوری اجرا می‌کردیم که همه تضمین‌های read بودن را دور می‌ریخت.</p>
+<p>متد QUERY دقیقاً همین شکاف را پر می‌کند و در ریجستری متدهای IANA با دو ویژگی safe و idempotent ثبت شده است. چند نکته ریز اما مهم هم دارد: وجود <code>Content-Type</code> اجباری است و اگر نباشد یا با محتوا نسازد، سرور باید درخواست را با 4xx رد کند (content sniffing هم ممنوع است). پاسخ QUERY قابل cache است، اما cache key باید body درخواست و metadata آن را هم شامل شود؛ یعنی cache کردن QUERY ذاتاً سنگین‌تر از GET است، چون cache باید کل body را بخواند تا بفهمد دو query یکی هستند یا نه.</p>
+<p>یک مکانیزم جالب دیگر هم دارد: سرور می‌تواند در پاسخ موفق، header با نام Location برگرداند و برای خود query یک URI معرفی کند. در این حالت، client می‌تواند همان query را بعداً با GET روی آن URI تکرار کند، بدون اینکه دوباره body را بفرستد. این کار می‌تواند cache و conditional request را به مدل آشناتر GET نزدیک کند، البته فقط وقتی سرور واقعاً چنین URIای را پایدار و قابل استفاده طراحی کرده باشد. برای اینکه client بفهمد سرور چه نوع queryای را قبول می‌کند، سرور می‌تواند در پاسخ، <code>Accept-Query</code> را برگرداند و فرمت‌های قابل قبول را اعلام کند.</p>
+<p>نمونه request و response در بخش «مثال» انتهای صفحه آمده است. در آن مثال، query به شکل JSON در body ارسال می‌شود و سرور علاوه بر نتیجه، با <code>Location</code> آدرسی برای تکرار همان query با GET برمی‌گرداند.</p>
+<figure class="figure-block" data-align="center" data-size="normal" data-astro-cid-yht7xm4l> <img src="/images/quick-notes/http-query-method-rfc-10008/http-query-method-rfc-10008-diagram.png" alt="Comparison of GET, POST and the new HTTP QUERY method from RFC 10008" loading="lazy" decoding="async" class="figure-block__image" data-astro-cid-yht7xm4l>  </figure> 
+<p>خلاصه این تغییر: شکافی که سال‌ها بین GET و POST برای عملیات read با ورودی بزرگ وجود داشت، حالا یک جواب استاندارد دارد. البته استاندارد شدن با پشتیبانی فراگیر فرق دارد؛ client، framework، proxy و WAF کل مسیر باید این متد را بشناسند و در browser هم QUERY مثل هر متد غیر safelisted به preflight نیاز دارد. پس فعلاً بیشتر برای طراحی APIهای جدید و شناخت مسیر آینده HTTP باید به آن نگاه کنیم، نه جایگزینی فوری <code>POST /search</code> در production.</p> </div> <section class="mt-10 border-t border-slate-200/80 pt-8 dark:border-slate-800"> <h2 class="font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">مثال</h2> <pre class="mt-4 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 p-4 text-left text-sm leading-6 text-slate-100" dir="ltr"><code class="font-mono">QUERY /orders HTTP/1.1
+Host: api.example.org
+Content-Type: application/json
+Accept: application/json
+
+{
+  &quot;filters&quot;: { &quot;status&quot;: &quot;paid&quot;, &quot;total_gt&quot;: 1000 },
+  &quot;sort&quot;: [&quot;-created_at&quot;],
+  &quot;limit&quot;: 50
+}
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Location: /orders/stored-queries/7f3a
+
+[ ...matching orders... ]
+</code></pre> </section> <section class="mt-10 border-t border-slate-200/80 pt-8 dark:border-slate-800"> <h2 class="font-display text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">محدودیت‌ها</h2> <ul class="mt-4 list-disc space-y-2 pr-5 text-sm leading-8 muted marker:text-accent-500"> <li>متد QUERY جزو متدهای CORS-safelisted نیست؛ درخواست‌های cross-origin از سمت browser با این متد به preflight نیاز دارند، هرچند نتیجه preflight می‌تواند طبق Access-Control-Max-Age برای مدتی cache شود.</li><li>cache کردن پاسخ QUERY ذاتاً پیچیده‌تر از GET است؛ cache key باید کل body درخواست و metadata آن را هم شامل شود، یعنی cache باید body را کامل بخواند.</li><li>وجود Content-Type اجباری است؛ اگر نباشد یا با محتوای body نسازد، سرور باید درخواست را با 4xx رد کند و content sniffing هم مجاز نیست.</li><li>استاندارد شدن با پشتیبانی فراگیر فرق دارد؛ client، framework، proxy و WAF کل مسیر باید متد جدید را بشناسند و قبل از استفاده باید مسیر کامل تست شود.</li> </ul> </section> <section class="references-block" aria-labelledby="references-heading" dir="rtl" data-astro-cid-sekel5fk><h2 id="references-heading" class="references-block__title font-display" data-astro-cid-sekel5fk>منابع و مطالعهٔ بیشتر</h2><ol class="references-block__list" data-astro-cid-sekel5fk><li class="references-block__item" data-astro-cid-sekel5fk><div class="references-block__item-header" data-astro-cid-sekel5fk><a href="https://www.rfc-editor.org/rfc/rfc10008.html" target="_blank" rel="noopener noreferrer" class="references-block__link" data-astro-cid-sekel5fk><bdi dir="auto" data-astro-cid-sekel5fk>RFC 10008: The HTTP QUERY Method</bdi></a><span class="references-block__badge" data-astro-cid-sekel5fk>RFC</span></div><p class="references-block__meta" data-astro-cid-sekel5fk><span data-astro-cid-sekel5fk><bdi dir="auto" data-astro-cid-sekel5fk>IETF</bdi></span><span data-astro-cid-sekel5fk><bdi dir="ltr" data-astro-cid-sekel5fk>rfc-editor.org</bdi></span><span data-astro-cid-sekel5fk>بازبینی: <bdi dir="rtl" data-astro-cid-sekel5fk>۱۳ تیر ۱۴۰۵</bdi></span></p><p class="references-block__note" dir="rtl" data-astro-cid-sekel5fk>تعریف رسمی متد QUERY به عنوان Proposed Standard؛ شامل safe و idempotent بودن، الزام Content-Type، قاعده cache key بر پایه body، فیلد Accept-Query، مکانیزم معرفی URI برای query یا نتیجه، و ملاحظه CORS preflight.</p></li><li class="references-block__item" data-astro-cid-sekel5fk><div class="references-block__item-header" data-astro-cid-sekel5fk><a href="https://www.iana.org/assignments/http-methods" target="_blank" rel="noopener noreferrer" class="references-block__link" data-astro-cid-sekel5fk><bdi dir="auto" data-astro-cid-sekel5fk>IANA HTTP Method Registry</bdi></a><span class="references-block__badge" data-astro-cid-sekel5fk>مستندات رسمی</span></div><p class="references-block__meta" data-astro-cid-sekel5fk><span data-astro-cid-sekel5fk><bdi dir="auto" data-astro-cid-sekel5fk>IANA</bdi></span><span data-astro-cid-sekel5fk><bdi dir="ltr" data-astro-cid-sekel5fk>iana.org</bdi></span><span data-astro-cid-sekel5fk>بازبینی: <bdi dir="rtl" data-astro-cid-sekel5fk>۱۳ تیر ۱۴۰۵</bdi></span></p><p class="references-block__note" dir="rtl" data-astro-cid-sekel5fk>ثبت رسمی QUERY در registry متدهای HTTP با دو ویژگی safe و idempotent و ارجاع به RFC 10008.</p></li></ol></section> </article>  </main> <footer class="mt-0 border-t border-slate-200/70 bg-white/75 dark:border-slate-800/75 dark:bg-slate-950/70"> <div class="site-frame site-frame--wide flex flex-col gap-5 py-7 md:flex-row md:items-center md:justify-between"> <div class="max-w-2xl"> <p class="font-display text-lg font-semibold text-slate-900 dark:text-slate-100">Pedram Sarani</p> <p class="mt-2 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300"> یادداشت‌های SRE و DevOps درباره Kubernetes reliability، Linux internals، CI/CD، GitOps، Observability و پایداری در production. </p> <p class="mt-3 text-xs uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">(c) 2026 همه حقوق محفوظ است.</p> </div> <div class="flex flex-wrap gap-2 text-sm md:flex-nowrap"> <a href="https://github.com/saranipedram" target="_blank" rel="noreferrer" class="chip"> GitHub </a><a href="https://devdocs.ir" target="_blank" rel="noreferrer" class="chip"> وبلاگ / نمونه‌کار </a><a href="https://www.linkedin.com/in/pedram-sarani/" target="_blank" rel="noreferrer" class="chip"> LinkedIn </a><a href="/rss.xml" class="chip"> RSS </a> </div> </div> </footer> <script>
+  (() => {
+    const onReady = (callback) => {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback, { once: true });
+      } else {
+        callback();
+      }
+    };
+
+    const readCode = (pre) => {
+      const code = pre.querySelector('code') ?? pre;
+      const lines = code.querySelectorAll('.line');
+
+      if (lines.length > 0) {
+        return Array.from(lines)
+          .map((line) => line.textContent ?? '')
+          .join('\n')
+          .replace(/\n+$/u, '');
+      }
+
+      return (code.textContent ?? '').replace(/\n+$/u, '');
+    };
+
+    const copyText = async (text) => {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return;
+        } catch {
+          // Fall through to the selection-based copy path for stricter browser contexts.
+        }
+      }
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.inset = '0 auto auto 0';
+      textarea.style.opacity = '0';
+      textarea.style.pointerEvents = 'none';
+
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+
+      const copied = document.execCommand('copy');
+      textarea.remove();
+
+      if (!copied) {
+        throw new Error('Copy failed');
+      }
+    };
+
+    const applyButtonStyles = (button) => {
+      button.style.position = 'static';
+      button.style.inset = 'auto';
+      button.style.zIndex = 'auto';
+      button.style.border = '1px solid rgba(148, 163, 184, 0.55)';
+      button.style.borderRadius = '9999px';
+      button.style.background = 'rgba(255, 255, 255, 0.9)';
+      button.style.color = '#334155';
+      button.style.cursor = 'pointer';
+      button.style.direction = 'ltr';
+      button.style.fontFamily = "'IBM Plex Sans', 'Vazirmatn', sans-serif";
+      button.style.fontSize = '0.72rem';
+      button.style.fontWeight = '700';
+      button.style.lineHeight = '1';
+      button.style.padding = '0.46rem 0.72rem';
+      button.style.textAlign = 'center';
+      button.style.userSelect = 'none';
+    };
+
+    onReady(() => {
+      const isFa = document.documentElement.lang === 'fa';
+      const idleText = isFa ? 'کپی' : 'Copy';
+      const doneText = isFa ? 'کپی شد' : 'Copied';
+      const failedText = isFa ? 'خطا' : 'Error';
+      const label = isFa ? 'کپی کردن کد' : 'Copy code';
+
+      document.querySelectorAll('.article-prose pre').forEach((pre) => {
+        if (pre.dataset.copyReady === 'true' || pre.closest('.code-block-wrapper')) {
+          return;
+        }
+
+        pre.dataset.copyReady = 'true';
+        pre.style.marginTop = '0';
+        pre.style.paddingTop = '1rem';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        wrapper.style.direction = 'ltr';
+        wrapper.style.margin = '1.75rem 0';
+        wrapper.style.maxWidth = 'none';
+        wrapper.style.width = '100%';
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'code-block-toolbar';
+        toolbar.style.display = 'flex';
+        toolbar.style.justifyContent = 'flex-end';
+        toolbar.style.marginBottom = '0.5rem';
+        toolbar.style.width = '100%';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy-button';
+        button.setAttribute('aria-label', label);
+        button.textContent = idleText;
+        applyButtonStyles(button);
+
+        button.addEventListener('click', async () => {
+          try {
+            await copyText(readCode(pre));
+            button.textContent = doneText;
+            button.dataset.state = 'copied';
+            button.style.borderColor = 'rgba(34, 197, 94, 0.55)';
+            button.style.color = '#15803d';
+          } catch {
+            button.textContent = failedText;
+            button.dataset.state = 'error';
+            button.style.borderColor = 'rgba(239, 68, 68, 0.6)';
+            button.style.color = '#b91c1c';
+          }
+
+          window.setTimeout(() => {
+            button.textContent = idleText;
+            delete button.dataset.state;
+            applyButtonStyles(button);
+          }, 1600);
+        });
+
+        pre.parentNode?.insertBefore(wrapper, pre);
+        toolbar.appendChild(button);
+        wrapper.appendChild(toolbar);
+        wrapper.appendChild(pre);
+      });
+    });
+  })();
+</script> </body></html>
